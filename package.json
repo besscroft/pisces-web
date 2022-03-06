@@ -1,0 +1,49 @@
+{
+  "name": "pisces-cloud-web",
+  "version": "0.0.2",
+  "homepage": "https://github.com/bessroft/pisces-cloud-web",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^1.0.1",
+    "axios": "^0.26.0",
+    "dayjs": "^1.10.8",
+    "element-plus": "^2.0.4",
+    "js-cookie": "^3.0.1",
+    "lodash": "^4.17.21",
+    "normalize.css": "^8.0.1",
+    "nprogress": "^0.2.0",
+    "path-to-regexp": "^6.2.0",
+    "screenfull": "^6.0.1",
+    "vue": "^3.2.31",
+    "vue-router": "^4.0.13",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@types/js-cookie": "^3.0.1",
+    "@types/lodash": "^4.14.179",
+    "@types/node": "^17.0.21",
+    "@types/nprogress": "^0.2.0",
+    "@vitejs/plugin-vue": "^2.2.0",
+    "@vue/cli-plugin-babel": "^5.0.1",
+    "@vue/cli-plugin-eslint": "^5.0.1",
+    "@vue/cli-plugin-router": "^5.0.1",
+    "@vue/cli-plugin-typescript": "^5.0.1",
+    "@vue/cli-plugin-vuex": "^5.0.1",
+    "@vue/cli-service": "^5.0.1",
+    "babel-loader": "^8.2.3",
+    "path-browserify": "^1.0.1",
+    "sass": "^1.49.9",
+    "sass-loader": "^12.6.0",
+    "svg-sprite-loader": "^6.0.11",
+    "typescript": "^4.6.2",
+    "unplugin-auto-import": "^0.6.1",
+    "unplugin-vue-components": "^0.17.21",
+    "vite": "^2.8.6",
+    "vue-tsc": "^0.29.8"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "strict": true,
+    "module": "esnext",
+    "target": "es6",
+    "moduleResolution": "Node",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "lib": ["esnext", "dom"],
+    "types": ["vite/client", "jest", "node"],
+    "esModuleInterop": true,
+    "plugins": [
+      { "name": "@vuedx/typescript-plugin-vue" }
+    ]
+  },
+  "include": [
+    "**/*.ts", "**/*.d.ts", "**/*.vue"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
