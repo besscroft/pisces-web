@@ -80,47 +80,6 @@
       }
     }
 
-    // 右侧设置面板
-    .handle-button {
-      background-color: lighten($theme-bg-color, 20%) !important;
-    }
-    .el-drawer.rtl {
-      background-color: $theme-bg-color;
-      .drawer-title,
-      .drawer-item {
-        color: $font-color;
-      }
-    }
-  }
-
-  /* 
-  * app-main 主要写 view 页面的黑暗样式
-  */
-
-  .app-main {
-    // 指令权限页面 /permission/directive
-    .permission-alert {
-      background-color: lighten($theme-bg-color, 8%);
-    }
-    // 监控页面 /monitor
-    .monitor {
-      background-color: $theme-bg-color;
-    }
-  }
-
-  /* 
-  * Login 页面
-  */
-
-  .login-container {
-    background-color: $theme-bg-color;
-    color: $font-color;
-    .login-card {
-      background-color: lighten($theme-bg-color, 4%) !important;
-    }
-    .el-icon {
-      color: $font-color;
-    }
   }
 
   /* 

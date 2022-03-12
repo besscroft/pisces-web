@@ -3,19 +3,20 @@
   <div class="sidebar-logo-container" :class="{collapse: collapse}">
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img src="@/assets/layout/logo.png" class="sidebar-logo">
+        <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <h1 v-if="title" class="sidebar-title">{{ title }}</h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img src="@/assets/layout/logo.png" class="sidebar-logo-text">
+        <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <h1 v-if="title" class="sidebar-title">{{ title }}</h1>
       </router-link>
     </transition>
-  </div>
-  <div>
-    231312
   </div>
 </template>
 
 <script lang="ts" setup>
+import logo from '@/assets/layout/logo.png'
+import { ref } from "vue";
 
 defineProps({
   collapse: {
@@ -23,15 +24,16 @@ defineProps({
     default: true
   }
 })
+
+const title = ref('Pisces Cloud');
 </script>
 
 <style lang="scss" scoped>
-.sidebarLogoFade-enter-active,
-.sidebarLogoFade-leave-active {
+.sidebarLogoFade-enter-active {
   transition: opacity 1.5s;
 }
 
-.sidebarLogoFade-enter-from,
+.sidebarLogoFade-enter,
 .sidebarLogoFade-leave-to {
   opacity: 0;
 }
@@ -39,39 +41,38 @@ defineProps({
 .sidebar-logo-container {
   position: relative;
   width: 100%;
-  height: 60px;
-  line-height: 84px;
-  background: #0c202b;
-  text-align: left;
+  height: 50px;
+  line-height: 50px;
+  background: #001529;
+  text-align: center;
   overflow: hidden;
-  .sidebar-logo {
-    display: none;
-  }
+
   & .sidebar-logo-link {
     height: 100%;
     width: 100%;
-    & .sidebar-logo-text {
-      height: 100%;
+
+    & .sidebar-logo {
+      width: 32px;
+      height: 32px;
+      vertical-align: middle;
+      margin-right: 12px;
     }
+
     & .sidebar-title {
       display: inline-block;
       margin: 0;
       color: #fff;
       font-weight: 600;
       line-height: 50px;
-      font-size: 16px;
+      font-size: 14px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+      vertical-align: middle;
     }
   }
+
   &.collapse {
     .sidebar-logo {
-      width: 32px;
-      height: 32px;
-      margin-right: 0;
-      display: inline-block;
-    }
-    .sidebar-logo-text {
-      display: none;
+      margin-right: 0px;
     }
   }
 }

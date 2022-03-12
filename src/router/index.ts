@@ -36,7 +36,6 @@ export const constantRoutes: any = [
         name: 'Dashboard',
         meta: {
           title: '首页',
-          icon: 'dashboard',
           affix: true
         }
       }

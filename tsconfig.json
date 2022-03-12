@@ -10,7 +10,7 @@
       "@/*": ["src/*"]
     },
     "lib": ["esnext", "dom"],
-    "types": ["vite/client", "jest", "node"],
+    "types": ["vite/client", "node"],
     "esModuleInterop": true,
     "plugins": [
       { "name": "@vuedx/typescript-plugin-vue" }

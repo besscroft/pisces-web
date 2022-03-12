@@ -1,23 +1,8 @@
 <template>
   <section class="app-main">
-    <router-view v-slot="{ Component, route }">
-      <transition name="fade-transform" mode="out-in">
-        <component :is="Component" :key="key" />
-      </transition>
-    </router-view>
+    <router-view />
   </section>
 </template>
-
-<script lang="ts" setup>
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
-const key = computed(() => {
-  return route.path
-})
-
-</script>
 
 <style lang="scss" scoped>
 .app-main {

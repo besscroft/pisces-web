@@ -6,7 +6,7 @@
         :collapse="isCollapse"
         :unique-opened="true"
         :default-active="activeMenu"
-        background-color="#152d3d"
+        background-color="#001529"
         text-color="#C0C4CC"
         active-text-color="#fff"
         mode="vertical"
@@ -103,7 +103,7 @@ const activeMenu = computed(() => {
 .has-logo {
   .el-scrollbar {
     // 84px 是 logo 区域的 height
-    height: calc(100% - 60px);
+    height: calc(100% - 50px);
   }
 }
 

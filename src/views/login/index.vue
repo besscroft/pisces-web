@@ -1,6 +1,5 @@
 <template>
   <div class="login-container">
-    <ThemeSwitch class="theme-switch" />
     <div class="login-card">
       <div class="login-title">
         Pisces Cloud
@@ -47,7 +46,6 @@ import { reactive, ref } from 'vue'
 import store from '@/store'
 import { useRouter } from 'vue-router'
 import { User, Lock } from '@element-plus/icons-vue'
-import ThemeSwitch from '@/components/themeSwitch/index.vue'
 
 interface ILoginForm {
   /** 用户名 */
