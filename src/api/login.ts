@@ -18,6 +18,7 @@ export function login(data: IUserRequestData) {
     data
   })
 }
+
 /** 获取用户详情 */
 export function GetUserInfo() {
   return request({
