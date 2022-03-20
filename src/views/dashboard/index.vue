@@ -49,7 +49,7 @@
 </template>
 <script lang="ts" setup>
 const forkAndPush = () => {
-  window.open("https://github.com/besscroft/aurora-mall/blob/main/fork-and-push.md", "_blank");
+  window.open("https://github.com/besscroft/pisces-cloud/blob/main/fork-and-push.md", "_blank");
 }
 const toDeveloper = () => {
   window.open("https://developer.besscroft.com/", "_blank");
