@@ -36,9 +36,12 @@ request.interceptors.response.use((response:AxiosResponse<BaseResponse>) => {
   } else {
     switch (code) {
       case 200:
-        return data
+        return response
+      case 401:
+        ElMessage.error('您没有权限请求此接口!')
+        return Promise.reject(new Error('您没有权限请求此接口!'))
       default:
-        ElMessage.error(data.msg || 'Error')
+        ElMessage.error(data.message || 'Error')
         return Promise.reject(new Error('Error'))
     }
   }

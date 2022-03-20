@@ -31,6 +31,8 @@ import BreadCrumb from '../breadCrumb/index.vue'
 import Hamburger from '../hamburger/index.vue'
 import ThemeSwitch from '@/components/themeSwitch/index.vue'
 import Screenfull from '@/components/screenfull/index.vue'
+import { loginOut } from '@/api/login'
+import {ElMessage} from "element-plus";
 
 const router = useRouter()
 const squareUrl = computed(() => {
@@ -50,9 +52,19 @@ const state = reactive({
     store.commit('app/TOGGLE_SIDEBAR', false)
   },
   logout: () => {
-    store.dispatch('user/logout')
-    router.push('/login').catch((err) => {
-      console.warn(err)
+    loginOut().then(res => {
+      let resData = res.data
+      if (resData.code === 200) {
+        ElMessage({
+          showClose: true,
+          type: 'success',
+          message: resData.message
+        })
+        store.dispatch('user/logout')
+        router.push('/login').catch((err) => {
+          console.warn(err)
+        })
+      }
     })
   }
 })

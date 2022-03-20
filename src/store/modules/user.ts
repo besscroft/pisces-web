@@ -38,7 +38,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username, password })
         .then((res: any) => {
-          const { data } = JSON.parse(JSON.stringify(res))
+          let resData = res.data
+          const { data } = JSON.parse(JSON.stringify(resData))
           setToken(data.token)
           commit('SET_TOKEN', data.token)
           resolve(data)
@@ -53,7 +54,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       GetUserInfo()
         .then((res: any) => {
-          const { data } = JSON.parse(JSON.stringify(res))
+          let resData = res.data
+          const { data } = JSON.parse(JSON.stringify(resData))
           commit('SET_NAME', data.username)
           commit('SET_AVATAR', data.avatar)
           commit('SET_ROLES', data.roles)

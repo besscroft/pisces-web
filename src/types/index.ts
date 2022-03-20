@@ -3,3 +3,8 @@ interface BaseResponse<T = any> {
   message: string
   data: T
 }
+
+interface IUserRequestData {
+  username: string
+  password: string
+}
