@@ -27,69 +27,71 @@
         </el-card>
       </el-header>
       <el-main>
-        <el-table v-loading="loading" border :data="userList" height="250" style="width: 100%;height: 650px">
-          <el-table-column prop="username" label="用户名" width="150" />
-          <el-table-column prop="avatar" label="头像" width="150">
-            <template #default="scope">
-              <el-image style="width: 100px; height: 100px" :src="scope.row.avatar" fit="fit" />
-            </template>
-          </el-table-column>
-          <el-table-column prop="email" label="邮箱" />
-          <el-table-column prop="name" label="昵称" />
-          <el-table-column prop="telephone" label="手机" />
-          <el-table-column prop="birthday" label="生日" />
-          <el-table-column prop="sex" label="性别">
-            <template #default="scope">
-              <p v-if="scope.row.sex === 1">男</p>
-              <p v-else>女</p>
-            </template>
-          </el-table-column>
-          <el-table-column prop="status" label="启用状态">
-            <template #default="scope">
-              <el-switch
-                v-model="scope.row.status"
-                inline-prompt
-                active-text="是"
-                inactive-text="否"
-                @change="handleChangeStatus(scope.row)"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column prop="remark" label="备注" />
-          <el-table-column fixed="right" label="操作" width="120">
-            <template #default="scope">
-              <el-button type="primary" circle :icon="InfoFilled" size="small" @click="handleClickDetail(scope.row)"/>
-              <el-button type="primary" circle :icon="Edit" size="small" @click="handleUpdateUser(scope.row)"/>
-              <el-popconfirm
-                confirm-button-text="是的"
-                cancel-button-text="点错了，抱歉"
-                :icon="InfoFilled"
-                icon-color="red"
-                title="确定要删除吗?"
-                @confirm="handleClickDelete(scope.row.id)"
-              >
-                <template #reference>
-                  <el-button type="danger" circle :icon="Delete" size="small"/>
-                </template>
-              </el-popconfirm>
-            </template>
-          </el-table-column>
-        </el-table>
+        <el-card class="box-card">
+          <el-table v-loading="loading" border :data="userList" height="250" style="width: 100%;height: 650px">
+            <el-table-column prop="username" label="用户名" width="100" />
+            <el-table-column prop="avatar" label="头像" width="150">
+              <template #default="scope">
+                <el-image style="width: 100px; height: 100px" :src="scope.row.avatar" fit="fit" />
+              </template>
+            </el-table-column>
+            <el-table-column prop="email" label="邮箱" />
+            <el-table-column prop="name" label="昵称" width="100"/>
+            <el-table-column prop="telephone" label="手机" />
+            <el-table-column prop="birthday" label="生日" />
+            <el-table-column prop="sex" label="性别" width="100">
+              <template #default="scope">
+                <p v-if="scope.row.sex === 1">男</p>
+                <p v-else>女</p>
+              </template>
+            </el-table-column>
+            <el-table-column prop="status" label="启用状态" width="100">
+              <template #default="scope">
+                <el-switch
+                  v-model="scope.row.status"
+                  inline-prompt
+                  active-text="是"
+                  inactive-text="否"
+                  @change="handleChangeStatus(scope.row)"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="remark" label="备注" />
+            <el-table-column fixed="right" label="操作" width="150">
+              <template #default="scope">
+                <el-button type="primary" circle :icon="InfoFilled" size="small" @click="handleClickDetail(scope.row)"/>
+                <el-button type="primary" circle :icon="Edit" size="small" @click="handleUpdateUser(scope.row)"/>
+                <el-popconfirm
+                  confirm-button-text="是的"
+                  cancel-button-text="点错了，抱歉"
+                  :icon="InfoFilled"
+                  icon-color="red"
+                  title="确定要删除吗?"
+                  @confirm="handleClickDelete(scope.row.id)"
+                >
+                  <template #reference>
+                    <el-button type="danger" circle :icon="Delete" size="small"/>
+                  </template>
+                </el-popconfirm>
+              </template>
+            </el-table-column>
+          </el-table>
 
-        <div class="demo-pagination-block">
-          <el-pagination
-            v-model:currentPage="currentPage"
-            v-model:page-size="pageSize"
-            :page-sizes="[10, 50, 100, 200]"
-            :small="small"
-            :disabled="disabled"
-            :background="background"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
-        </div>
+          <div class="demo-pagination-block">
+            <el-pagination
+              v-model:currentPage="currentPage"
+              v-model:page-size="pageSize"
+              :page-sizes="[10, 50, 100, 200]"
+              :small="small"
+              :disabled="disabled"
+              :background="background"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+            />
+          </div>
+        </el-card>
       </el-main>
     </el-container>
   </div>
@@ -209,7 +211,7 @@
   <!-- 修改用户弹窗 -->
   <el-dialog
     v-model="dialogVisibleUpdateUser"
-    title="新增用户"
+    title="修改用户"
     width="36%"
     :before-close="handleUpdateUserClose"
   >
@@ -512,7 +514,6 @@ const submitAddUserForm = async (formEl: FormInstance | undefined) => {
 
 /** 更新用户提交表单 */
 const submitUpdateUserForm = async () => {
-  console.log(updateUserForm)
   await updateUser(updateUserForm).then(res => {
     let resData = res.data
     if (resData.code === 200) {

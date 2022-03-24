@@ -1,5 +1,15 @@
 <template>
-  666
+  <div class="common-layout">
+    <el-container style="height: 100%">
+      <el-header style="margin-top: 12px">
+        <el-card class="box-card">
+          日志管理
+        </el-card>
+      </el-header>
+      <el-main>
+      </el-main>
+    </el-container>
+  </div>
 </template>
 
 <script lang="ts" setup>

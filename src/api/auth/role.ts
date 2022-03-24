@@ -5,7 +5,7 @@ enum Api {
   ChangeStatus = '/pisces-admin/role/change'
 }
 
-/** 获取用户列表 */
+/** 获取菜单列表 */
 export function list(data: RoleListRequestData) {
   return request({
     url: Api.List,

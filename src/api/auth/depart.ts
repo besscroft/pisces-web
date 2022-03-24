@@ -4,7 +4,7 @@ enum Api {
   List = '/pisces-admin/depart/list'
 }
 
-/** 获取用户列表 */
+/** 获取部门列表 */
 export function list(data: DepartListRequestData) {
   return request({
     url: Api.List,
