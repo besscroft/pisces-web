@@ -156,25 +156,25 @@
       class="demo-ruleForm"
     >
       <el-form-item label="用户名" prop="username" required>
-        <el-input v-model="addUserRuleForm.username" />
+        <el-input placeholder="请输入用户名" v-model="addUserRuleForm.username" />
       </el-form-item>
       <el-form-item label="密码" prop="password" required>
-        <el-input v-model="addUserRuleForm.password" />
+        <el-input placeholder="请输入密码" v-model="addUserRuleForm.password" />
       </el-form-item>
       <el-form-item label="头像" prop="avatar">
-        <el-input v-model="addUserRuleForm.avatar" />
+        <el-input placeholder="请输入头像地址" v-model="addUserRuleForm.avatar" />
       </el-form-item>
       <el-form-item label="邮件" prop="email">
-        <el-input v-model="addUserRuleForm.email" />
+        <el-input placeholder="请输入邮件" v-model="addUserRuleForm.email" />
       </el-form-item>
       <el-form-item label="昵称" prop="name">
-        <el-input v-model="addUserRuleForm.name" />
+        <el-input placeholder="请输入昵称" v-model="addUserRuleForm.name" />
       </el-form-item>
       <el-form-item label="真实姓名" prop="realName">
-        <el-input v-model="addUserRuleForm.realName" />
+        <el-input placeholder="请输入真实姓名" v-model="addUserRuleForm.realName" />
       </el-form-item>
       <el-form-item label="手机号" prop="telephone">
-        <el-input v-model="addUserRuleForm.telephone" />
+        <el-input placeholder="请输入手机号" v-model="addUserRuleForm.telephone" />
       </el-form-item>
       <el-form-item label="生日">
         <el-col :span="11">
@@ -196,7 +196,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
-        <el-input v-model="addUserRuleForm.remark" type="textarea" />
+        <el-input placeholder="请输入备注" v-model="addUserRuleForm.remark" type="textarea" />
       </el-form-item>
       <el-form-item>
           <span class="dialog-footer">
@@ -217,12 +217,10 @@
   >
     <el-form
       :model="updateUserForm"
+      ref="updateUserRuleFormRef"
       label-width="120px"
       class="demo-ruleForm"
     >
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="updateUserForm.password" />
-      </el-form-item>
       <el-form-item label="头像" prop="avatar">
         <el-input v-model="updateUserForm.avatar" />
       </el-form-item>
@@ -263,7 +261,7 @@
       <el-form-item>
           <span class="dialog-footer">
             <el-button @click="submitUpdateUserForm">提交</el-button>
-            <el-button type="primary" @click="handleUpdateUserClose">关闭</el-button>
+            <el-button type="primary" @click="handleUpdateUserClose(updateUserRuleFormRef)">关闭</el-button>
           </span>
       </el-form-item>
     </el-form>
@@ -284,13 +282,14 @@ const small = ref(false)
 const background = ref(false)
 const disabled = ref<boolean>(false)
 const userList = ref([])
-const userDetail = ref()
+const userDetail = ref({})
 const loading = ref<boolean>(false)
 const dialogVisibleDetail = ref<boolean>(false)
 const dialogVisibleAddUser = ref<boolean>(false)
 const dialogVisibleUpdateUser = ref<boolean>(false)
 
 const addUserRuleFormRef = ref<FormInstance>()
+const updateUserRuleFormRef = ref<FormInstance>()
 
 const data = reactive({
   form: {},
@@ -440,7 +439,8 @@ const handleChangeStatus = (val: any) => {
 
 /** 用户信息弹窗关闭处理 */
 const handleDetailClose = () => {
-  userDetail.value = null
+  userDetail.value = {}
+  dialogVisibleDetail.value = false
 }
 
 /** 新增用户弹窗关闭处理 */
@@ -451,15 +451,7 @@ const handleAddUserClose = () => {
 
 /** 更新用户弹窗关闭处理 */
 const handleUpdateUserClose = () => {
-  updateUserForm.id = 0
-  updateUserForm.avatar = undefined
-  updateUserForm.email = undefined
-  updateUserForm.name = undefined
-  updateUserForm.realName = undefined
-  updateUserForm.telephone = undefined
-  updateUserForm.birthday = undefined
-  updateUserForm.sex = undefined
-  updateUserForm.remark = undefined
+  updateUserRuleFormRef.value.resetFields()
   dialogVisibleUpdateUser.value = false
 }
 

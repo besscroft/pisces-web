@@ -36,9 +36,9 @@ export function addUser(data: AddUserRequestData) {
 }
 
 /** 删除用户 */
-export function deleteUser(id: number) {
+export function deleteUser(userId: number) {
   return request({
-    url: Api.Delete + '/' + id,
+    url: Api.Delete + '/' + userId,
     method: 'delete'
   })
 }

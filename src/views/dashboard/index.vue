@@ -36,7 +36,10 @@
               </div>
             </template>
             <div class="text item">
-              <div v-for="o in 4" :key="o" class="text item">{{ '• 待办事项 ' + o }}</div>
+              <div :key="1" class="text item">• 数据库设计</div>
+              <div :key="2" class="text item">• 后端开发</div>
+              <div :key="3" class="text item">• 前端开发</div>
+              <div :key="4" class="text item">• 全栈监控</div>
             </div>
           </el-card>
         </el-space>
