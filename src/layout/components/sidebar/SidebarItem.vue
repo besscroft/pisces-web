@@ -5,14 +5,8 @@
   >
     <template v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild)">
-        <!-- todo 动态 icon -->
-        <svg-icon
-          v-if="onlyOneChild.meta.icon"
-          :name="onlyOneChild.meta.icon"
-          :icon="onlyOneChild.meta.icon"
-          font-size="16px"
-        />
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{ 'submenu-title-noDropdown': !isNest }">
+          <ElSvgItem :elSvgName="onlyOneChild.meta.icon" />
           <template #title>{{ onlyOneChild.meta.title }}</template>
         </el-menu-item>
       </app-link>
@@ -20,7 +14,7 @@
 
     <el-sub-menu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template v-if="item.meta" #title>
-        <svg-icon v-if="item.meta && item.meta.icon" :name="item.meta.icon" font-size="16px" />
+        <ElSvgItem :elSvgName="item.meta.icon" />
         <span>{{ item.meta.title }}</span>
       </template>
 
@@ -41,12 +35,29 @@ import { isExternal } from '@/utils/validate'
 import AppLink from './Link.vue'
 import { getResolvePath } from '@/utils'
 import { ref } from 'vue'
+import ElSvgItem from './ElSvgItem.vue'
 
 const props = defineProps({
   // route object
   item: {
     type: Object,
     required: true
+  },
+  icon: {
+    type: String,
+    default: ''
+  },
+  meta: {
+    type: Object,
+    default: null
+  },
+  title: {
+    type: String,
+    default: ''
+  },
+  elIcon: {
+    type: Boolean,
+    default: false
   },
   isCollapse: {
     type: Boolean,

@@ -111,13 +111,13 @@ $sideBarWidth: 220px;
 
 .hideSidebar {
   .main-container {
-    margin-left: 54px;
+    margin-left: 42px;
   }
   .sidebar-container {
-    width: 54px !important;
+    width: 42px !important;
   }
   .fixed-header {
-    width: calc(100% - 54px);
+    width: calc(100% - 42px);
   }
 }
 
