@@ -29,23 +29,23 @@
       <el-main>
         <el-card class="box-card">
           <el-table v-loading="loading" border :data="userList" height="250" style="width: 100%;height: 650px">
-            <el-table-column prop="username" label="用户名" width="100" />
-            <el-table-column prop="avatar" label="头像" width="150">
+            <el-table-column prop="username" label="用户名"/>
+            <el-table-column prop="avatar" label="头像" width="88">
               <template #default="scope">
-                <el-image style="width: 100px; height: 100px" :src="scope.row.avatar" fit="fit" />
+                <el-image style="width: 66px; height: 66px" :src="scope.row.avatar" fit="fit" />
               </template>
             </el-table-column>
             <el-table-column prop="email" label="邮箱" />
-            <el-table-column prop="name" label="昵称" width="100"/>
+            <el-table-column prop="name" label="昵称"/>
             <el-table-column prop="telephone" label="手机" />
             <el-table-column prop="birthday" label="生日" />
-            <el-table-column prop="sex" label="性别" width="100">
+            <el-table-column prop="sex" label="性别">
               <template #default="scope">
                 <p v-if="scope.row.sex === 1">男</p>
                 <p v-else>女</p>
               </template>
             </el-table-column>
-            <el-table-column prop="status" label="启用状态" width="100">
+            <el-table-column prop="status" label="启用状态">
               <template #default="scope">
                 <el-switch
                   v-model="scope.row.status"
@@ -57,22 +57,35 @@
               </template>
             </el-table-column>
             <el-table-column prop="remark" label="备注" />
-            <el-table-column fixed="right" label="操作" width="150">
+            <el-table-column fixed="right" label="操作" width="168">
               <template #default="scope">
-                <el-button type="primary" circle :icon="InfoFilled" size="small" @click="handleClickDetail(scope.row)"/>
-                <el-button type="primary" circle :icon="Edit" size="small" @click="handleUpdateUser(scope.row)"/>
-                <el-popconfirm
-                  confirm-button-text="是的"
-                  cancel-button-text="点错了，抱歉"
-                  :icon="InfoFilled"
-                  icon-color="red"
-                  title="确定要删除吗?"
-                  @confirm="handleClickDelete(scope.row.id)"
-                >
-                  <template #reference>
-                    <el-button type="danger" circle :icon="Delete" size="small"/>
-                  </template>
-                </el-popconfirm>
+                <el-row :gutter="20">
+                  <el-col :span="11">
+                    <el-button type="primary" size="small" @click="handleRoleBanding(scope.row)">角色配置</el-button>
+                  </el-col>
+                  <el-col :span="11">
+                    <el-button type="primary" size="small" @click="handleClickDetail(scope.row)">查看详情</el-button>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="11">
+                    <el-button type="primary" size="small" @click="handleUpdateUser(scope.row)">编辑用户</el-button>
+                  </el-col>
+                  <el-col :span="11">
+                    <el-popconfirm
+                      confirm-button-text="是的"
+                      cancel-button-text="点错了，抱歉"
+                      :icon="InfoFilled"
+                      icon-color="red"
+                      title="确定要删除吗?"
+                      @confirm="handleClickDelete(scope.row.id)"
+                    >
+                      <template #reference>
+                        <el-button type="danger" size="small">删除用户</el-button>
+                      </template>
+                    </el-popconfirm>
+                  </el-col>
+                </el-row>
               </template>
             </el-table-column>
           </el-table>
@@ -272,7 +285,7 @@
 import { reactive, ref } from 'vue'
 import { list, changeStatus, addUser, updateUser, deleteUser } from '@/api/auth/user'
 import { Search, Avatar, Delete, InfoFilled, Edit } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElNotification } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 
 const currentPage = ref(1)
@@ -538,6 +551,15 @@ const canalForm = (formEl: FormInstance | undefined) => {
   formEl.clearValidate()
   dialogVisibleAddUser.value = false
   dialogVisibleUpdateUser.value = false
+}
+
+/** todo(besscroft) 角色绑定弹窗 */
+const handleRoleBanding = () => {
+  ElNotification({
+    title: '温馨提示',
+    message: '正在开发中呢！',
+    type: 'info',
+  })
 }
 
 getUserList()

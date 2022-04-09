@@ -4,8 +4,10 @@
   </el-icon>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import * as ElSvg from '@element-plus/icons-vue'
+
+/** 设置默认值，定义类型 */
 const props = defineProps({
   elSvgName: {
     require: true,
