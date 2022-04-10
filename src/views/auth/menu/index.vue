@@ -115,7 +115,7 @@
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
-import { list, changeStatus, deleteMenu, updateMenu } from '@/api/auth/menu'
+import { List, ChangeStatus, DeleteMenu, UpdateMenu } from '@/api/auth/menu'
 
 const background = ref(false)
 const menuList = ref([])
@@ -153,7 +153,7 @@ const updateMenuForm = reactive<UpdateMenuRequestData>({
 /** 获取菜单列表 */
 const getMenuList = () => {
   loading.value = true
-  list(data.queryParam).then(res => {
+  List(data.queryParam).then(res => {
     loading.value = false
     let resData = res.data
     let dataList = resData.data.list
@@ -192,7 +192,7 @@ const handleChangeStatus = (val: any) => {
 
 /** 更改菜单可用状态 */
 const changeStatusFetch = (data: ChangeMenuStatusRequestData) => {
-  changeStatus(data).then(res => {
+  ChangeStatus(data).then(res => {
     let resData = res.data
     if (resData.code === 200) {
       ElMessage({
@@ -232,8 +232,7 @@ const handleUpdateMenuClose = () => {
 
 /** 菜单更新提交 */
 const submitUpdateMenuForm = async () => {
-  console.log(updateMenuForm)
-  await updateMenu(updateMenuForm).then(res => {
+  await UpdateMenu(updateMenuForm).then(res => {
     let resData = res.data
     if (resData.code === 200) {
       ElMessage({
@@ -255,8 +254,7 @@ const submitUpdateMenuForm = async () => {
 
 /** 删除菜单 */
 const handleDelete = (data: number) => {
-  console.log(data)
-  deleteMenu(data).then(res => {
+  DeleteMenu(data).then(res => {
     let resData = res.data
     if (resData.code === 200) {
       ElMessage({

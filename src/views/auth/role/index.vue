@@ -212,11 +212,10 @@
 import { reactive, ref } from 'vue'
 import { Search, InfoFilled, Delete, Pointer, Edit } from '@element-plus/icons-vue'
 import { ElMessage, ElTree, FormInstance } from 'element-plus'
-import { list } from '@/api/auth/role'
-import { changeStatus, updateMenu, updateResource, deleteRoleById, UpdateRole, AddRole } from '@/api/auth/role'
-import { findMenuIdsByRoleId, getAllMenu } from '@/api/auth/menu'
+import { ChangeStatus, UpdateMenu, UpdateResource, DeleteRoleById, List } from '@/api/auth/role'
+import { FindMenuIdsByRoleId, GetAllMenu } from '@/api/auth/menu'
 import { TreeKey } from 'element-plus/es/components/tree-v2/src/types'
-import { findResourceIdsByRoleId, getAllResource } from '@/api/auth/resource'
+import { FindResourceIdsByRoleId, GetAllResource } from '@/api/auth/resource'
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -288,7 +287,7 @@ const updateRoleRuleForm = reactive<UpdateRoleRequestData>({
 /** 获取角色列表 */
 const getRoleList = () => {
   loading.value = true
-  list(data.queryParam).then(res => {
+  List(data.queryParam).then(res => {
     loading.value = false
     let resData = res.data
     let dataList = resData.data.list
@@ -333,7 +332,7 @@ const handleChangeStatus = (val: any) => {
 
 /** 更改角色可用状态 */
 const changeStatusFetch = (data: ChangeRoleStatusRequestData) => {
-  changeStatus(data).then(res => {
+  ChangeStatus(data).then(res => {
     let resData = res.data
     if (resData.code === 200) {
       ElMessage({
@@ -353,7 +352,7 @@ const changeStatusFetch = (data: ChangeRoleStatusRequestData) => {
 
 /** 角色删除 */
 const handleClickDelete = (val: number) => {
-  deleteRoleById(val).then(res => {
+  DeleteRoleById(val).then(res => {
     let resData = res.data
     if (resData.code === 200) {
       ElMessage({
@@ -377,13 +376,13 @@ const handleMenuBanding = (val: any) => {
   dialogMenuVisible.value = true
   menuDataListByRoleId.value = []
   roleId.value = val.id
-  getAllMenu().then(res => {
+  GetAllMenu().then(res => {
     let resData = res.data
     if (resData.code === 200) {
       menuDataList.value = resData.data
     }
   })
-  findMenuIdsByRoleId(val.id).then(res => {
+  FindMenuIdsByRoleId(val.id).then(res => {
     let resData = res.data
     if (resData.code === 200) {
       menuDataListByRoleId.value = resData.data
@@ -398,7 +397,7 @@ const handleMenuSubmit = () => {
   let childTree = treeMenuRef.value!.getCheckedKeys(false)
   const menuTreeData: Array<TreeKey> = [...parentTree, ...childTree];
   console.log(menuTreeData)
-  updateMenu(roleId.value, menuTreeData).then(res =>{
+  UpdateMenu(roleId.value, menuTreeData).then(res =>{
     let resData = res.data
     if (resData.code === 200) {
       ElMessage({
@@ -421,13 +420,13 @@ const handleResourceBanding = (val: any) => {
   dialogResourceVisible.value = true
   resourceDataListByRoleId.value = []
   roleId.value = val.id
-  getAllResource().then(res => {
+  GetAllResource().then(res => {
     let resData = res.data
     if (resData.code === 200) {
       resourceDataList.value = resData.data
     }
   })
-  findResourceIdsByRoleId(val.id).then(res => {
+  FindResourceIdsByRoleId(val.id).then(res => {
     let resData = res.data
     if (resData.code === 200) {
       resourceDataListByRoleId.value = resData.data
@@ -439,7 +438,7 @@ const handleResourceBanding = (val: any) => {
 const handleResourceSubmit = () => {
   dialogResourceVisible.value = false
   let childTree = treeResourceRef.value!.getCheckedKeys(false)
-  updateResource(roleId.value, childTree).then(res =>{
+  UpdateResource(roleId.value, childTree).then(res =>{
     let resData = res.data
     if (resData.code === 200) {
       ElMessage({

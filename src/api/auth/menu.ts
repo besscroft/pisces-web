@@ -10,7 +10,7 @@ enum Api {
 }
 
 /** 获取用菜单列表 */
-export function list(data: MenuListRequestData) {
+export function List(data: MenuListRequestData) {
   return request({
     url: Api.List,
     method: 'post',
@@ -19,7 +19,7 @@ export function list(data: MenuListRequestData) {
 }
 
 /** 更改菜单可用状态 */
-export function changeStatus(data: ChangeMenuStatusRequestData) {
+export function ChangeStatus(data: ChangeMenuStatusRequestData) {
   return request({
     url: Api.ChangeStatus,
     method: 'put',
@@ -28,7 +28,7 @@ export function changeStatus(data: ChangeMenuStatusRequestData) {
 }
 
 /** 删除菜单 */
-export function deleteMenu(menuId: number) {
+export function DeleteMenu(menuId: number) {
   return request({
     url: Api.Delete + '/' + menuId,
     method: 'delete'
@@ -36,7 +36,7 @@ export function deleteMenu(menuId: number) {
 }
 
 /** 更新菜单 */
-export function updateMenu(data: UpdateMenuRequestData) {
+export function UpdateMenu(data: UpdateMenuRequestData) {
   return request({
     url: Api.Update,
     method: 'put',
@@ -45,7 +45,7 @@ export function updateMenu(data: UpdateMenuRequestData) {
 }
 
 /** 根据角色 id 查询菜单 id 列表 */
-export function findMenuIdsByRoleId(roleId: number) {
+export function FindMenuIdsByRoleId(roleId: number) {
   return request({
     url: Api.GetMenuIdsByRoleId + '/' + roleId,
     method: 'get'
@@ -53,7 +53,7 @@ export function findMenuIdsByRoleId(roleId: number) {
 }
 
 /** 获取所有菜单树 */
-export function getAllMenu() {
+export function GetAllMenu() {
   return request({
     url: Api.GetAll,
     method: 'get'

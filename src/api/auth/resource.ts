@@ -7,7 +7,7 @@ enum Api {
 }
 
 /** 获取资源列表 */
-export function list(data: ResourceListRequestData) {
+export function List(data: ResourceListRequestData) {
   return request({
     url: Api.List,
     method: 'post',
@@ -16,7 +16,7 @@ export function list(data: ResourceListRequestData) {
 }
 
 /** 获取资源树 */
-export function getAllResource() {
+export function GetAllResource() {
   return request({
     url: Api.GetAll,
     method: 'get'
@@ -24,7 +24,7 @@ export function getAllResource() {
 }
 
 /** 根据角色id获取资源id列表 */
-export function findResourceIdsByRoleId(id: number) {
+export function FindResourceIdsByRoleId(id: number) {
   return request({
     url: Api.GetResourceIdsByRoleId + '/' + id,
     method: 'get'

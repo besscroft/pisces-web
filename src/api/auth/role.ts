@@ -8,11 +8,12 @@ enum Api {
   UpdateResource = '/pisces-admin/role/update/resource',
   Delete = '/pisces-admin/role/delete',
   AddRole = '/pisces-admin/role/add',
-  UpdateRole = '/pisces-admin/role/update'
+  UpdateRole = '/pisces-admin/role/update',
+  GetRoleDict = '/pisces-admin/role/getRoleDict'
 }
 
 /** 获取菜单列表 */
-export function list(data: RoleListRequestData) {
+export function List(data: RoleListRequestData) {
   return request({
     url: Api.List,
     method: 'post',
@@ -21,7 +22,7 @@ export function list(data: RoleListRequestData) {
 }
 
 /** 更改角色可用状态 */
-export function changeStatus(data: ChangeRoleStatusRequestData) {
+export function ChangeStatus(data: ChangeRoleStatusRequestData) {
   return request({
     url: Api.ChangeStatus,
     method: 'put',
@@ -30,7 +31,7 @@ export function changeStatus(data: ChangeRoleStatusRequestData) {
 }
 
 /** 更新角色菜单 */
-export function updateMenu(roleId: number, menuIds: Array<TreeKey>) {
+export function UpdateMenu(roleId: number, menuIds: Array<TreeKey>) {
   return request({
     url: Api.UpdateMenu,
     method: 'post',
@@ -42,7 +43,7 @@ export function updateMenu(roleId: number, menuIds: Array<TreeKey>) {
 }
 
 /** 更新角色资源 */
-export function updateResource(roleId: number, resourceIds: Array<TreeKey>) {
+export function UpdateResource(roleId: number, resourceIds: Array<TreeKey>) {
   return request({
     url: Api.UpdateResource,
     method: 'post',
@@ -54,7 +55,7 @@ export function updateResource(roleId: number, resourceIds: Array<TreeKey>) {
 }
 
 /** 删除角色 */
-export function deleteRoleById(roleId: number) {
+export function DeleteRoleById(roleId: number) {
   return request({
     url: Api.Delete + '/' + roleId,
     method: 'delete'
@@ -76,5 +77,13 @@ export function UpdateRole(data: UpdateRoleRequestData) {
     url: Api.UpdateRole,
     method: 'put',
     data
+  })
+}
+
+/** 获取角色字典 */
+export function GetRoleDict() {
+  return request({
+    url: Api.GetRoleDict,
+    method: 'get'
   })
 }

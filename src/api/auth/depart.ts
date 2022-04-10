@@ -5,7 +5,7 @@ enum Api {
 }
 
 /** 获取部门列表 */
-export function list(data: DepartListRequestData) {
+export function List(data: DepartListRequestData) {
   return request({
     url: Api.List,
     method: 'post',

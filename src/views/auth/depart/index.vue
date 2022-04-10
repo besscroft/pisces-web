@@ -69,7 +69,7 @@
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Search, InfoFilled, Delete } from '@element-plus/icons-vue'
-import { list } from '@/api/auth/depart'
+import { List } from '@/api/auth/depart'
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -92,7 +92,7 @@ const data = reactive({
 /** 获取部门列表 */
 const getDepartList = () => {
   loading.value = true
-  list(data.queryParam).then(res => {
+  List(data.queryParam).then(res => {
     loading.value = false
     let resData = res.data
     let dataList = resData.data.list

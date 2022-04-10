@@ -5,11 +5,12 @@ enum Api {
   ChangeStatus = '/pisces-admin/user/change',
   Add = '/pisces-admin/user/add',
   Delete = '/pisces-admin/user/delete',
-  Update = '/pisces-admin/user/update'
+  Update = '/pisces-admin/user/update',
+  UpdateUserRole = '/pisces-admin/user/update/role'
 }
 
 /** 获取用户列表 */
-export function list(data: UserListRequestData) {
+export function List(data: UserListRequestData) {
   return request({
     url: Api.List,
     method: 'post',
@@ -18,7 +19,7 @@ export function list(data: UserListRequestData) {
 }
 
 /** 更改用户可用状态 */
-export function changeStatus(data: ChangeUserStatusRequestData) {
+export function ChangeStatus(data: ChangeUserStatusRequestData) {
   return request({
     url: Api.ChangeStatus,
     method: 'put',
@@ -27,7 +28,7 @@ export function changeStatus(data: ChangeUserStatusRequestData) {
 }
 
 /** 新增用户 */
-export function addUser(data: AddUserRequestData) {
+export function AddUser(data: AddUserRequestData) {
   return request({
     url: Api.Add,
     method: 'post',
@@ -36,7 +37,7 @@ export function addUser(data: AddUserRequestData) {
 }
 
 /** 删除用户 */
-export function deleteUser(userId: number) {
+export function DeleteUser(userId: number) {
   return request({
     url: Api.Delete + '/' + userId,
     method: 'delete'
@@ -44,9 +45,18 @@ export function deleteUser(userId: number) {
 }
 
 /** 更新用户 */
-export function updateUser(data: UpdateUserRequestData) {
+export function UpdateUser(data: UpdateUserRequestData) {
   return request({
     url: Api.Update,
+    method: 'put',
+    data
+  })
+}
+
+/** 更新用户的角色 */
+export function UpdateUserRole(data: UpdateUserRoleRequestData) {
+  return request({
+    url: Api.UpdateUserRole,
     method: 'put',
     data
   })

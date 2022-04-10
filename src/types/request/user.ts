@@ -56,3 +56,11 @@ interface UpdateUserRequestData {
   /** 备注 */
   remark: string | undefined
 }
+
+/** 更新用户角色请求参数 */
+interface UpdateUserRoleRequestData {
+  /** 用户 id */
+  userId: number
+  /** 角色 id 列表 */
+  roleIds: Array<number> | undefined
+}

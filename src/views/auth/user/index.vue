@@ -213,9 +213,9 @@
       </el-form-item>
       <el-form-item>
           <span class="dialog-footer">
-            <el-button @click="submitAddUserForm(addUserRuleFormRef)">提交</el-button>
-            <el-button type="primary" @click="resetForm(addUserRuleFormRef)">重置</el-button>
-            <el-button type="primary" @click="canalForm(addUserRuleFormRef)">关闭</el-button>
+            <el-button type="primary" @click="submitAddUserForm(addUserRuleFormRef)">提交</el-button>
+            <el-button @click="resetForm(addUserRuleFormRef)">重置</el-button>
+            <el-button @click="canalForm(addUserRuleFormRef)">关闭</el-button>
           </span>
       </el-form-item>
     </el-form>
@@ -273,8 +273,39 @@
       </el-form-item>
       <el-form-item>
           <span class="dialog-footer">
-            <el-button @click="submitUpdateUserForm">提交</el-button>
-            <el-button type="primary" @click="handleUpdateUserClose(updateUserRuleFormRef)">关闭</el-button>
+            <el-button type="primary" @click="submitUpdateUserForm">提交</el-button>
+            <el-button @click="handleUpdateUserClose(updateUserRuleFormRef)">关闭</el-button>
+          </span>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+
+  <!-- 绑定角色弹窗 -->
+  <el-dialog
+    v-model="dialogVisibleUpdateRole"
+    title="绑定角色"
+    width="36%"
+    :before-close="handleUpdateRoleClose"
+  >
+    <el-form
+      :model="updateRoleForm"
+      ref="updateRoleRuleFormRef"
+      label-width="120px"
+      class="demo-ruleForm"
+    >
+      到底应该单角色，还是支持多角色，应根据系统业务需求来定！这里保留多角色接口，需要时替换组件即可！
+      <el-form-item label="选择角色" prop="roleIds">
+        <el-select-v2
+          v-model="value"
+          :options="options"
+          placeholder="Please select"
+          size="large"
+        />
+      </el-form-item>
+      <el-form-item>
+          <span class="dialog-footer">
+            <el-button @click="submitUpdateRoleForm">提交</el-button>
+            <el-button type="primary" @click="handleUpdateRoleClose(updateUserRuleFormRef)">关闭</el-button>
           </span>
       </el-form-item>
     </el-form>
@@ -283,9 +314,10 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { list, changeStatus, addUser, updateUser, deleteUser } from '@/api/auth/user'
+import { List, ChangeStatus, AddUser, UpdateUser, DeleteUser, UpdateUserRole } from '@/api/auth/user'
+import { GetRoleDict } from '@/api/auth/role'
 import { Search, Avatar, Delete, InfoFilled, Edit } from '@element-plus/icons-vue'
-import { ElMessage, ElNotification } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 
 const currentPage = ref(1)
@@ -300,9 +332,16 @@ const loading = ref<boolean>(false)
 const dialogVisibleDetail = ref<boolean>(false)
 const dialogVisibleAddUser = ref<boolean>(false)
 const dialogVisibleUpdateUser = ref<boolean>(false)
+const dialogVisibleUpdateRole = ref<boolean>(false)
+const value = ref<Array<number>>()
+const options = ref([{
+  label: '',
+  value: 0
+}])
 
 const addUserRuleFormRef = ref<FormInstance>()
 const updateUserRuleFormRef = ref<FormInstance>()
+const updateRoleRuleFormRef = ref<FormInstance>()
 
 const data = reactive({
   form: {},
@@ -310,7 +349,7 @@ const data = reactive({
     pageNum: 1,
     pageSize: 10,
     queryKey: ''
-  },
+  }
 })
 
 const addUserRuleForm = reactive<AddUserRequestData>({
@@ -337,7 +376,7 @@ const addUserRuleForm = reactive<AddUserRequestData>({
 })
 
 const updateUserForm = reactive<UpdateUserRequestData>({
-  /** 用户id */
+  /** 用户 id */
   id: 0,
   /** 头像 */
   avatar: undefined,
@@ -357,6 +396,13 @@ const updateUserForm = reactive<UpdateUserRequestData>({
   remark: undefined,
 })
 
+const updateRoleForm = reactive<UpdateUserRoleRequestData>({
+  /** 用户 id */
+  userId: 0,
+  /** 角色 id 列表 */
+  roleIds: []
+})
+
 const addUserRules = reactive({
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -371,7 +417,7 @@ const addUserRules = reactive({
 /** 获取用户列表 */
 const getUserList = () => {
   loading.value = true
-  list(data.queryParam).then(res => {
+  List(data.queryParam).then(res => {
     loading.value = false
     let resData = res.data
     let dataList = resData.data.list
@@ -390,7 +436,7 @@ const getUserList = () => {
 
 /** 更改用户可用状态 */
 const changeStatusFetch = (data: ChangeUserStatusRequestData) => {
-  changeStatus(data).then(res => {
+  ChangeStatus(data).then(res => {
     let resData = res.data
     if (resData.code === 200) {
       ElMessage({
@@ -427,8 +473,7 @@ const handleClickDetail = (data: any) => {
 
 /** 删除用户 */
 const handleClickDelete = (data: number) => {
-  console.log(data)
-  deleteUser(data).then(res => {
+  DeleteUser(data).then(res => {
     let resData = res.data
     if (resData.code === 200) {
       ElMessage({
@@ -492,7 +537,7 @@ const submitAddUserForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid: any, fields: any) => {
     if (valid) {
-      addUser(addUserRuleForm).then(res => {
+      AddUser(addUserRuleForm).then(res => {
         let resData = res.data
         if (resData.code === 200) {
           ElMessage({
@@ -519,7 +564,7 @@ const submitAddUserForm = async (formEl: FormInstance | undefined) => {
 
 /** 更新用户提交表单 */
 const submitUpdateUserForm = async () => {
-  await updateUser(updateUserForm).then(res => {
+  await UpdateUser(updateUserForm).then(res => {
     let resData = res.data
     if (resData.code === 200) {
       ElMessage({
@@ -527,7 +572,6 @@ const submitUpdateUserForm = async () => {
         message: resData.message,
         type: 'success'
       })
-      handleUpdateUserClose()
       getUserList()
     } else {
       ElMessage({
@@ -536,6 +580,7 @@ const submitUpdateUserForm = async () => {
         type: 'success'
       })
     }
+    handleUpdateUserClose()
   })
 }
 
@@ -553,13 +598,53 @@ const canalForm = (formEl: FormInstance | undefined) => {
   dialogVisibleUpdateUser.value = false
 }
 
-/** todo(besscroft) 角色绑定弹窗 */
-const handleRoleBanding = () => {
-  ElNotification({
-    title: '温馨提示',
-    message: '正在开发中呢！',
-    type: 'info',
+/** 角色绑定弹窗 */
+const handleRoleBanding = (val: any) => {
+  updateRoleForm.userId = val.id
+  GetRoleDict().then(res => {
+    let data = res.data.data
+    let roleDict: { value: any; label: any }[] = []
+    for (const dataListKey in data) {
+      let role = data[dataListKey]
+      roleDict.push({
+        value: `${role.roleId}`,
+        label: `${role.roleName}`
+      })
+    }
+    options.value = roleDict
   })
+  dialogVisibleUpdateRole.value = true
+  updateRoleForm.userId = val.id
+}
+
+/** 角色绑定提交 */
+const submitUpdateRoleForm = async () => {
+  let roleIds: Array<number> = []
+  roleIds.push(value.value)
+  updateRoleForm.roleIds = roleIds
+  await UpdateUserRole(updateRoleForm).then(res => {
+    let resData = res.data
+    if (resData.code === 200) {
+      ElMessage({
+        showClose: true,
+        message: resData.message,
+        type: 'success'
+      })
+      getUserList()
+    } else {
+      ElMessage({
+        showClose: true,
+        message: resData.message,
+        type: 'success'
+      })
+    }
+    handleUpdateRoleClose()
+  })
+}
+
+/** 角色绑定关闭 */
+const handleUpdateRoleClose = () => {
+  dialogVisibleUpdateRole.value = false
 }
 
 getUserList()

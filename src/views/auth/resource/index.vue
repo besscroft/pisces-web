@@ -70,7 +70,7 @@
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Search, InfoFilled, Delete } from '@element-plus/icons-vue'
-import { list } from '@/api/auth/resource'
+import { List } from '@/api/auth/resource'
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -93,7 +93,7 @@ const data = reactive({
 /** 获取资源列表 */
 const getResourceList = () => {
   loading.value = true
-  list(data.queryParam).then(res => {
+  List(data.queryParam).then(res => {
     loading.value = false
     let resData = res.data
     let dataList = resData.data.list

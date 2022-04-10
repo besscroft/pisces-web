@@ -5,7 +5,7 @@ enum Api {
 }
 
 /** 获取资源类别列表 */
-export function list(data: ResourceCategoryListRequestData) {
+export function List(data: ResourceCategoryListRequestData) {
   return request({
     url: Api.List,
     method: 'post',
