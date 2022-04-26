@@ -68,7 +68,7 @@
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Search, InfoFilled, Delete } from '@element-plus/icons-vue'
-import { List } from '@/api/auth/resourceCategory'
+import { List, DeleteResourceCategory } from '@/api/auth/resourceCategory'
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -119,10 +119,22 @@ const handleSearchChange = () => {
 
 /** 资源类别删除 */
 const handleClickDelete = (val: number) => {
-  ElMessage({
-    showClose: true,
-    type: 'warning',
-    message: '还没写！'
+  DeleteResourceCategory(val).then(res => {
+    let resData = res.data
+    if (resData.code === 200) {
+      ElMessage({
+        showClose: true,
+        type: 'success',
+        message: resData.message
+      })
+    } else {
+      ElMessage({
+        showClose: true,
+        type: 'error',
+        message: resData.message
+      })
+    }
+    getResourceCategoryList()
   })
 }
 

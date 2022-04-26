@@ -69,7 +69,7 @@
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Search, InfoFilled, Delete } from '@element-plus/icons-vue'
-import { List } from '@/api/auth/depart'
+import { List, DeleteDepart } from '@/api/auth/depart'
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -120,10 +120,22 @@ const handleSearchChange = () => {
 
 /** 部门删除 */
 const handleClickDelete = (val: number) => {
-  ElMessage({
-    showClose: true,
-    type: 'warning',
-    message: '还没写！'
+  DeleteDepart(val).then(res => {
+    let resData = res.data
+    if (resData.code === 200) {
+      ElMessage({
+        showClose: true,
+        type: 'success',
+        message: resData.message
+      })
+    } else {
+      ElMessage({
+        showClose: true,
+        type: 'error',
+        message: resData.message
+      })
+    }
+    getDepartList()
   })
 }
 
