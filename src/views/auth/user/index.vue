@@ -287,6 +287,7 @@
     width="36%"
     :before-close="handleUpdateRoleClose"
   >
+    <el-button type="primary" plain>当前角色：{{ roleNames }}</el-button>
     <el-form
       :model="updateRoleForm"
       ref="updateRoleRuleFormRef"
@@ -294,6 +295,8 @@
       class="demo-ruleForm"
     >
       到底应该单角色，还是支持多角色，应根据系统业务需求来定！这里保留多角色接口，需要时替换组件即可！
+      <br />
+      <br />
       <el-form-item label="选择角色" prop="roleIds">
         <el-select-v2
           v-model="value"
@@ -315,10 +318,11 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { List, ChangeStatus, AddUser, UpdateUser, DeleteUser, UpdateUserRole } from '@/api/auth/user'
-import { GetRoleDict } from '@/api/auth/role'
+import { GetRoleDict, GetRoleByUserId } from '@/api/auth/role'
 import { Search, Avatar, Delete, InfoFilled, Edit } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance } from 'element-plus'
+import store from "@/store";
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -334,6 +338,7 @@ const dialogVisibleAddUser = ref<boolean>(false)
 const dialogVisibleUpdateUser = ref<boolean>(false)
 const dialogVisibleUpdateRole = ref<boolean>(false)
 const value = ref<Array<number>>()
+const roleNames = ref<Array<String>>()
 const options = ref([{
   label: '',
   value: 0
@@ -599,19 +604,20 @@ const canalForm = (formEl: FormInstance | undefined) => {
 }
 
 /** 角色绑定弹窗 */
-const handleRoleBanding = (val: any) => {
+const handleRoleBanding = async (val: any) => {
   updateRoleForm.userId = val.id
-  GetRoleDict().then(res => {
+  await GetRoleDict().then(res => {
     let data = res.data.data
-    let roleDict: { value: any; label: any }[] = []
-    for (const dataListKey in data) {
-      let role = data[dataListKey]
-      roleDict.push({
-        value: `${role.roleId}`,
-        label: `${role.roleName}`
-      })
-    }
+    let roleDict: { value: string; label: string }[]
+    roleDict = data.map((i: any) => ({
+      value: i.roleId,
+      label: i.roleName
+    }))
     options.value = roleDict
+  })
+  await GetRoleByUserId(val.id).then(res => {
+    let data = res.data.data
+    roleNames.value = data[0].roleName
   })
   dialogVisibleUpdateRole.value = true
   updateRoleForm.userId = val.id

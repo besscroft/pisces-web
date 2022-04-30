@@ -9,7 +9,8 @@ enum Api {
   Delete = '/pisces-admin/role/delete',
   AddRole = '/pisces-admin/role/add',
   UpdateRole = '/pisces-admin/role/update',
-  GetRoleDict = '/pisces-admin/role/getRoleDict'
+  GetRoleDict = '/pisces-admin/role/getRoleDict',
+  GetRoleByUserId = '/pisces-admin/role/get'
 }
 
 /** 获取菜单列表 */
@@ -84,6 +85,14 @@ export function UpdateRole(data: UpdateRoleRequestData) {
 export function GetRoleDict() {
   return request({
     url: Api.GetRoleDict,
+    method: 'get'
+  })
+}
+
+/** 根据用户 id 获取角色信息 */
+export function GetRoleByUserId(userId: number) {
+  return request({
+    url: Api.GetRoleByUserId + '/' + userId,
     method: 'get'
   })
 }

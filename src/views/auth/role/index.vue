@@ -179,7 +179,7 @@
   >
     <el-form
       :model="updateRoleRuleForm"
-      ref="formAddRoleRef"
+      ref="formUpdateRoleRef"
       label-width="120px"
       class="demo-ruleForm"
     >
@@ -201,7 +201,7 @@
       </el-form-item>
       <el-form-item>
           <span class="dialog-footer">
-            <el-button type="primary" @click="resetRoleForm(formAddRoleRef)">重置</el-button>
+            <el-button type="primary" @click="resetRoleForm(formUpdateRoleRef)">重置</el-button>
             <el-button @click="submitUpdateRoleForm">提交</el-button>
           </span>
       </el-form-item>
@@ -396,7 +396,6 @@ const handleMenuSubmit = () => {
   let parentTree = treeMenuRef.value!.getHalfCheckedKeys()
   let childTree = treeMenuRef.value!.getCheckedKeys(false)
   const menuTreeData: Array<TreeKey> = [...parentTree, ...childTree];
-  console.log(menuTreeData)
   UpdateMenu(roleId.value, menuTreeData).then(res =>{
     let resData = res.data
     if (resData.code === 200) {
@@ -463,7 +462,6 @@ const handleAddRole = () => {
 
 /** 新增角色提交 */
 const submitAddRoleForm = () => {
-  console.log(addRoleRuleForm)
   dialogAddRoleVisible.value = false
 }
 
@@ -496,7 +494,6 @@ const handleUpdateRoleClose = () => {
 
 /** 更新角色提交 */
 const submitUpdateRoleForm = () => {
-  console.log(updateRoleRuleForm)
   dialogUpdateRoleVisible.value = false
 }
 

@@ -17,6 +17,13 @@
             :icon="Search">
             搜索
           </el-button>
+          <el-button
+            style="margin-left: 4px"
+            type="primary"
+            @click="handleAddResource"
+            :icon="Pointer">
+            新增资源
+          </el-button>
         </el-card>
       </el-header>
       <el-main>
@@ -31,6 +38,7 @@
             <el-table-column prop="updateTime" label="更新时间" />
             <el-table-column fixed="right" label="操作" width="150">
               <template #default="scope">
+                <el-button type="primary" circle :icon="Edit" size="small" @click="handleUpdateResource(scope.row)"/>
                 <el-popconfirm
                   confirm-button-text="是的"
                   cancel-button-text="点错了，抱歉"
@@ -65,12 +73,110 @@
       </el-main>
     </el-container>
   </div>
+
+  <!-- 新增资源弹窗 -->
+  <el-dialog
+    v-model="dialogAddResourceVisible"
+    title="新增资源"
+    width="30%"
+    :before-close="handleAddResourceClose"
+  >
+    <el-form
+      :model="addResourceRuleForm"
+      ref="formAddResourceRef"
+      label-width="120px"
+      class="demo-ruleForm"
+    >
+      <el-form-item label="资源类别" prop="categoryId">
+        <el-select-v2 v-model="addResourceRuleForm.categoryId" class="m-2" placeholder="请选择资源类别" size="large">
+          <el-option
+            v-for="item in resourceCategoryDicts"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select-v2>
+      </el-form-item>
+      <el-form-item label="资源名称" prop="name">
+        <el-input placeholder="请输入资源名称" v-model="addResourceRuleForm.name" />
+      </el-form-item>
+      <el-form-item label="资源路径" prop="url">
+        <el-input placeholder="请输入资源路径" v-model="addResourceRuleForm.url" />
+      </el-form-item>
+      <el-form-item label="排序" prop="sort">
+        <el-input placeholder="请输入资源排序" v-model="addResourceRuleForm.sort" />
+      </el-form-item>
+      <el-form-item label="资源描述" prop="description">
+        <el-input
+          v-model="addResourceRuleForm.description"
+          :rows="2"
+          type="textarea"
+          placeholder="请输入资源描述"
+        />
+      </el-form-item>
+      <el-form-item>
+          <span class="dialog-footer">
+            <el-button type="warning" @click="resetResourceForm(formAddResourceRef)">重置</el-button>
+            <el-button type="primary" @click="submitAddResourceForm">提交</el-button>
+          </span>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+
+  <!-- 更新资源弹窗 -->
+  <el-dialog
+    v-model="dialogUpdateResourceVisible"
+    title="新增资源"
+    width="30%"
+    :before-close="handleUpdateResourceClose"
+  >
+    <el-form
+      :model="updateResourceRuleForm"
+      ref="formUpdateResourceRef"
+      label-width="120px"
+      class="demo-ruleForm"
+    >
+      <el-form-item label="资源类别" prop="categoryId">
+        <el-select v-model="updateResourceRuleForm.categoryId" class="m-2" placeholder="请选择资源类别" size="large">
+          <el-option
+            v-for="item in resourceCategoryDicts"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="资源名称" prop="name">
+        <el-input v-model="updateResourceRuleForm.name" />
+      </el-form-item>
+      <el-form-item label="资源路径" prop="url">
+        <el-input v-model="updateResourceRuleForm.url" />
+      </el-form-item>
+      <el-form-item label="排序" prop="sort">
+        <el-input v-model="updateResourceRuleForm.sort" />
+      </el-form-item>
+      <el-form-item label="资源描述" prop="description">
+        <el-input
+          v-model="updateResourceRuleForm.description"
+          :rows="2"
+          type="textarea"
+        />
+      </el-form-item>
+      <el-form-item>
+          <span class="dialog-footer">
+            <el-button type="primary" @click="resetResourceForm(formUpdateResourceRef)">重置</el-button>
+            <el-button @click="submitUpdateResourceForm">提交</el-button>
+          </span>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { ElMessage } from 'element-plus'
-import { Search, InfoFilled, Delete } from '@element-plus/icons-vue'
-import { List, DeleteResource } from '@/api/auth/resource'
+import { ElMessage, FormInstance } from 'element-plus'
+import { Search, InfoFilled, Delete, Pointer, Edit } from '@element-plus/icons-vue'
+import { List, DeleteResource, AddResource, UpdateResource } from '@/api/auth/resource'
+import { GetResourceCategoryDict } from '@/api/auth/resourceCategory'
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -80,6 +186,16 @@ const background = ref(false)
 const disabled = ref<boolean>(false)
 const resourceList = ref([])
 const loading = ref<boolean>(false)
+const dialogAddResourceVisible = ref(false)
+const dialogUpdateResourceVisible = ref(false)
+
+const formAddResourceRef = ref<FormInstance>()
+const formUpdateResourceRef = ref<FormInstance>()
+
+const resourceCategoryDicts = ref([{
+  label: '',
+  value: 0
+}])
 
 const data = reactive({
   form: {},
@@ -88,6 +204,34 @@ const data = reactive({
     pageSize: 10,
     queryKey: ''
   },
+})
+
+const addResourceRuleForm = reactive<AddResourceRequestData>({
+  /** 资源名称 */
+  name: '',
+  /** 资源路径 */
+  url: '',
+  /** 资源描述 */
+  description: '',
+  /** 资源类别ID */
+  categoryId: undefined,
+  /** 排序 */
+  sort: 2
+})
+
+const updateResourceRuleForm = reactive<UpdateResourceRequestData>({
+  /** 资源 id */
+  resourceId: undefined,
+  /** 资源名称 */
+  name: '',
+  /** 资源路径 */
+  url: '',
+  /** 资源描述 */
+  description: '',
+  /** 资源类别ID */
+  categoryId: undefined,
+  /** 排序 */
+  sort: 2
 })
 
 /** 获取资源列表 */
@@ -100,6 +244,20 @@ const getResourceList = () => {
     resourceList.value = dataList
     total.value = resData.data.total
   });
+}
+
+/** 获取资源类别字典 */
+const getResourceCategoryDict = () => {
+  GetResourceCategoryDict().then(res => {
+    let resData = res.data
+    let data = resData.data
+    let resourceCategoryDict: { value: any; label: any }[]
+    resourceCategoryDict = data.map((i: any) => ({
+      value: i.resourceCategoryId,
+      label: i.categoryName
+    }))
+    resourceCategoryDicts.value = resourceCategoryDict
+  })
 }
 
 /** 页大小调整 */
@@ -140,5 +298,72 @@ const handleClickDelete = (val: number) => {
   })
 }
 
+/** 重置表单 */
+const resetResourceForm = (formEl: FormInstance | undefined) => {
+  formEl.resetFields()
+}
+
+/** 新增资源按钮 */
+const handleAddResource = () => {
+  dialogAddResourceVisible.value = true
+}
+
+/** 新增资源提交 */
+const submitAddResourceForm = () => {
+  AddResource(addResourceRuleForm).then(res => {
+    let resData = res.data
+    if (resData.code === 200) {
+      ElMessage({
+        showClose: true,
+        type: 'success',
+        message: resData.message
+      })
+    }
+    handleAddResourceClose()
+    getResourceList()
+  })
+}
+
+/** 新增资源弹窗关闭 */
+const handleAddResourceClose = () => {
+  formAddResourceRef.value.resetFields()
+  addResourceRuleForm.categoryId = undefined
+  dialogAddResourceVisible.value = false
+}
+
+/** 更新资源按钮 */
+const handleUpdateResource = (val: any) => {
+  updateResourceRuleForm.resourceId = val.id
+  updateResourceRuleForm.name = val.name
+  updateResourceRuleForm.url = val.url
+  updateResourceRuleForm.description = val.description
+  updateResourceRuleForm.sort = val.sort
+  updateResourceRuleForm.categoryId = val.categoryId
+  dialogUpdateResourceVisible.value = true
+}
+
+/** 更新资源弹窗关闭 */
+const handleUpdateResourceClose = () => {
+  formUpdateResourceRef.value.resetFields()
+  dialogUpdateResourceVisible.value = false
+}
+
+/** 更新资源提交 */
+const submitUpdateResourceForm = () => {
+  UpdateResource(updateResourceRuleForm).then(res => {
+    let resData = res.data
+    if (resData.code === 200) {
+      ElMessage({
+        showClose: true,
+        type: 'success',
+        message: resData.message
+      })
+    }
+    handleUpdateResourceClose()
+    getResourceList()
+  })
+}
+
 getResourceList()
+getResourceCategoryDict()
 </script>

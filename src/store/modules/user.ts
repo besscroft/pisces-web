@@ -1,19 +1,22 @@
 import { getToken, removeToken, setToken } from '@/utils/cookies'
 import { resetRouter } from '@/router'
 import { login, GetUserInfo } from '@/api/login'
+import store from "@/store";
 
 export type UserState = {
   token: string
   name: string
   avatar: string
   roles: string[]
+  roleNames: string[]
 }
 
 const state: UserState = {
   token: getToken() || '',
   name: '',
   avatar: '',
-  roles: []
+  roles: [],
+  roleNames: []
 }
 
 const mutations = {
@@ -28,6 +31,9 @@ const mutations = {
   },
   SET_ROLES: (state: UserState, roles: string[]) => {
     state.roles = roles
+  },
+  SET_ROLENAMES: (state: UserState, roleNames: string[]) => {
+    state.roleNames = roleNames
   }
 }
 
@@ -59,6 +65,7 @@ const actions = {
           commit('SET_NAME', data.username)
           commit('SET_AVATAR', data.avatar)
           commit('SET_ROLES', data.roles)
+          commit('SET_ROLENAMES', data.roleNames)
           resolve(data)
         })
         .catch((error) => {
@@ -69,8 +76,11 @@ const actions = {
   /** 登出 */
   logout({ commit }: any) {
     removeToken()
+    commit('SET_NAME', '')
+    commit('SET_AVATAR', '')
     commit('SET_TOKEN', '')
     commit('SET_ROLES', [])
+    commit('SET_ROLENAMES', [])
     resetRouter()
   },
   /** 重置 token */
@@ -78,6 +88,7 @@ const actions = {
     removeToken()
     commit('SET_TOKEN', '')
     commit('SET_ROLES', [])
+    commit('SET_ROLENAMES', [])
   }
 }
 

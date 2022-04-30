@@ -4,7 +4,9 @@ enum Api {
   List = '/pisces-admin/resource/list',
   GetAll = '/pisces-admin/resource/getAll',
   GetResourceIdsByRoleId = '/pisces-admin/resource/getId/role',
-  Delete = '/pisces-admin/resource/delete'
+  Delete = '/pisces-admin/resource/delete',
+  AddResource = '/pisces-admin/resource/add',
+  UpdateResource = '/pisces-admin/resource/update'
 }
 
 /** 获取资源列表 */
@@ -37,5 +39,23 @@ export function DeleteResource(resourceId: number) {
   return request({
     url: Api.Delete + '/' + resourceId,
     method: 'delete'
+  })
+}
+
+/** 新增资源 */
+export function AddResource(data: AddResourceRequestData) {
+  return request({
+    url: Api.AddResource,
+    method: 'post',
+    data: data
+  })
+}
+
+/** 更新资源 */
+export function UpdateResource(data: UpdateResourceRequestData) {
+  return request({
+    url: Api.UpdateResource,
+    method: 'put',
+    data: data
   })
 }
