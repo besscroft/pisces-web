@@ -38,7 +38,7 @@
             <el-table-column prop="updateTime" label="更新时间" />
             <el-table-column fixed="right" label="操作" width="150">
               <template #default="scope">
-                <el-button type="primary" circle :icon="Edit" size="small" @click="handleUpdateResource(scope.row)"/>
+                <el-button size="small" @click="handleUpdateResource(scope.row)">编辑</el-button>
                 <el-popconfirm
                   confirm-button-text="是的"
                   cancel-button-text="点错了，抱歉"
@@ -48,7 +48,9 @@
                   @confirm="handleClickDelete(scope.row.id)"
                 >
                   <template #reference>
-                    <el-button type="danger" circle :icon="Delete" size="small"/>
+                    <el-button
+                      size="small"
+                      type="danger">删除</el-button>
                   </template>
                 </el-popconfirm>
               </template>
@@ -88,14 +90,14 @@
       class="demo-ruleForm"
     >
       <el-form-item label="资源类别" prop="categoryId">
-        <el-select-v2 v-model="addResourceRuleForm.categoryId" class="m-2" placeholder="请选择资源类别" size="large">
+        <el-select v-model="addResourceRuleForm.categoryId" class="m-2" placeholder="请选择资源类别" size="large">
           <el-option
             v-for="item in resourceCategoryDicts"
             :key="item.value"
             :label="item.label"
             :value="item.value"
           />
-        </el-select-v2>
+        </el-select>
       </el-form-item>
       <el-form-item label="资源名称" prop="name">
         <el-input placeholder="请输入资源名称" v-model="addResourceRuleForm.name" />
@@ -116,8 +118,8 @@
       </el-form-item>
       <el-form-item>
           <span class="dialog-footer">
-            <el-button type="warning" @click="resetResourceForm(formAddResourceRef)">重置</el-button>
             <el-button type="primary" @click="submitAddResourceForm">提交</el-button>
+            <el-button type="warning" @click="resetResourceForm(formAddResourceRef)">重置</el-button>
           </span>
       </el-form-item>
     </el-form>
@@ -164,8 +166,8 @@
       </el-form-item>
       <el-form-item>
           <span class="dialog-footer">
-            <el-button type="primary" @click="resetResourceForm(formUpdateResourceRef)">重置</el-button>
-            <el-button @click="submitUpdateResourceForm">提交</el-button>
+            <el-button type="primary" @click="submitUpdateResourceForm">提交</el-button>
+            <el-button type="warning" @click="resetResourceForm(formUpdateResourceRef)">重置</el-button>
           </span>
       </el-form-item>
     </el-form>
@@ -174,7 +176,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { ElMessage, FormInstance } from 'element-plus'
-import { Search, InfoFilled, Delete, Pointer, Edit } from '@element-plus/icons-vue'
+import { Search, InfoFilled, Pointer } from '@element-plus/icons-vue'
 import { List, DeleteResource, AddResource, UpdateResource } from '@/api/auth/resource'
 import { GetResourceCategoryDict } from '@/api/auth/resourceCategory'
 
@@ -300,7 +302,7 @@ const handleClickDelete = (val: number) => {
 
 /** 重置表单 */
 const resetResourceForm = (formEl: FormInstance | undefined) => {
-  formEl.resetFields()
+  formEl?.resetFields()
 }
 
 /** 新增资源按钮 */
@@ -326,7 +328,7 @@ const submitAddResourceForm = () => {
 
 /** 新增资源弹窗关闭 */
 const handleAddResourceClose = () => {
-  formAddResourceRef.value.resetFields()
+  formAddResourceRef.value?.resetFields()
   addResourceRuleForm.categoryId = undefined
   dialogAddResourceVisible.value = false
 }
@@ -344,7 +346,7 @@ const handleUpdateResource = (val: any) => {
 
 /** 更新资源弹窗关闭 */
 const handleUpdateResourceClose = () => {
-  formUpdateResourceRef.value.resetFields()
+  formUpdateResourceRef.value?.resetFields()
   dialogUpdateResourceVisible.value = false
 }
 

@@ -22,7 +22,7 @@
             type="primary"
             @click="handleAddDepart"
             :icon="Pointer">
-            新增角色
+            新增部门
           </el-button>
         </el-card>
       </el-header>
@@ -44,7 +44,7 @@
             <el-table-column prop="updateTime" label="更新时间" />
             <el-table-column fixed="right" label="操作" width="150">
               <template #default="scope">
-                <el-button type="primary" circle :icon="Edit" size="small" @click="handleUpdateDepart(scope.row)"/>
+                <el-button size="small" @click="handleUpdateDepart(scope.row)">编辑</el-button>
                 <el-popconfirm
                   confirm-button-text="是的"
                   cancel-button-text="点错了，抱歉"
@@ -54,7 +54,9 @@
                   @confirm="handleClickDelete(scope.row.id)"
                 >
                   <template #reference>
-                    <el-button type="danger" circle :icon="Delete" size="small"/>
+                    <el-button
+                      size="small"
+                      type="danger">删除</el-button>
                   </template>
                 </el-popconfirm>
               </template>
@@ -119,17 +121,17 @@
       </el-form-item>
       <el-form-item>
           <span class="dialog-footer">
-            <el-button type="warning" @click="resetDepartForm(formAddDepartRef)">重置</el-button>
             <el-button type="primary" @click="submitAddDepartForm">提交</el-button>
+            <el-button type="warning" @click="resetDepartForm(formAddDepartRef)">重置</el-button>
           </span>
       </el-form-item>
     </el-form>
   </el-dialog>
 
-  <!-- 更新部门弹窗 -->
+  <!-- 修改部门弹窗 -->
   <el-dialog
     v-model="dialogUpdateDepartVisible"
-    title="新增部门"
+    title="修改部门"
     width="30%"
     :before-close="handleUpdateDepartClose"
   >
@@ -164,8 +166,8 @@
       </el-form-item>
       <el-form-item>
           <span class="dialog-footer">
-            <el-button type="primary" @click="resetDepartForm(formUpdateDepartRef)">重置</el-button>
-            <el-button @click="submitUpdateDepartForm">提交</el-button>
+            <el-button type="primary" @click="submitUpdateDepartForm">提交</el-button>
+            <el-button type="warning" @click="resetDepartForm(formUpdateDepartRef)">重置</el-button>
           </span>
       </el-form-item>
     </el-form>
@@ -174,7 +176,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { ElMessage, FormInstance } from 'element-plus'
-import { Search, InfoFilled, Delete, Edit, Pointer } from '@element-plus/icons-vue'
+import { Search, InfoFilled, Pointer } from '@element-plus/icons-vue'
 import { List, DeleteDepart, AddDepart, UpdateDepart, GetDepartDict } from '@/api/auth/depart'
 
 const currentPage = ref(1)
@@ -291,7 +293,7 @@ const handleClickDelete = (val: number) => {
 
 /** 重置表单 */
 const resetDepartForm = (formEl: FormInstance | undefined) => {
-  formEl.resetFields()
+  formEl?.resetFields()
 }
 
 /** 新增部门按钮 */
@@ -318,7 +320,7 @@ const submitAddDepartForm = () => {
 
 /** 新增部门弹窗关闭 */
 const handleAddDepartClose = () => {
-  formAddDepartRef.value.resetFields()
+  formAddDepartRef.value?.resetFields()
   addDepartRuleForm.parentId = undefined
   dialogAddDepartVisible.value = false
 }
@@ -335,7 +337,7 @@ const handleUpdateDepart = (val: any) => {
 
 /** 更新部门弹窗关闭 */
 const handleUpdateDepartClose = () => {
-  formUpdateDepartRef.value.resetFields()
+  formUpdateDepartRef.value?.resetFields()
   dialogUpdateDepartVisible.value = false
 }
 

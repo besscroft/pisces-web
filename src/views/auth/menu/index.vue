@@ -17,6 +17,13 @@
             :icon="Search">
             搜索
           </el-button>
+          <el-button
+            style="margin-left: 4px"
+            type="primary"
+            @click="handleAddMenu"
+            :icon="Pointer">
+            新增菜单
+          </el-button>
         </el-card>
       </el-header>
       <el-main>
@@ -69,18 +76,68 @@
     </el-container>
   </div>
 
+  <!-- 新增菜单弹窗 -->
+  <el-dialog
+    v-model="dialogVisibleAddMenu"
+    title="新增菜单"
+    width="36%"
+    :before-close="handleAddMenuClose"
+  >
+    <el-form
+      :model="addMenuForm"
+      ref="formAddMenuRef"
+      label-width="120px"
+      class="demo-ruleForm"
+    >
+      <el-form-item label="父菜单选择" prop="title">
+        <el-cascader :options="options" :props="props1" @change="handleChange" clearable />
+      </el-form-item>
+      <el-form-item label="菜单名称" prop="title">
+        <el-input v-model="addMenuForm.title" />
+      </el-form-item>
+      <el-form-item label="前端名称" prop="name">
+        <el-input v-model="addMenuForm.name" />
+      </el-form-item>
+      <el-form-item label="菜单级数" prop="level">
+        <el-input v-model="addMenuForm.level" />
+      </el-form-item>
+      <el-form-item label="组件路径" prop="component">
+        <el-input v-model="addMenuForm.component" />
+      </el-form-item>
+      <el-form-item label="路由地址" prop="path">
+        <el-input v-model="addMenuForm.path" />
+      </el-form-item>
+      <el-form-item label="菜单图标名称" prop="icon">
+        <el-input v-model="addMenuForm.icon" />
+      </el-form-item>
+      <el-form-item label="菜单排序" prop="sort">
+        <el-input v-model="addMenuForm.sort" />
+      </el-form-item>
+      <el-form-item>
+          <span class="dialog-footer">
+            <el-button type="primary" @click="submitAddMenuForm">提交</el-button>
+            <el-button type="warning" @click="resetMenuForm(formAddMenuRef)">重置</el-button>
+          </span>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+
   <!-- 修改菜单弹窗 -->
   <el-dialog
     v-model="dialogVisibleUpdateMenu"
-    title="修改用户"
+    title="修改菜单"
     width="36%"
     :before-close="handleUpdateMenuClose"
   >
     <el-form
       :model="updateMenuForm"
+      ref="formUpdateMenuRef"
       label-width="120px"
       class="demo-ruleForm"
     >
+      <el-form-item label="父菜单选择" prop="title">
+        <el-cascader :options="options" :props="props1" @change="handleChange" clearable />
+      </el-form-item>
       <el-form-item label="菜单名称" prop="title">
         <el-input v-model="updateMenuForm.title" />
       </el-form-item>
@@ -104,8 +161,8 @@
       </el-form-item>
       <el-form-item>
           <span class="dialog-footer">
-            <el-button @click="submitUpdateMenuForm">提交</el-button>
-            <el-button type="primary" @click="handleUpdateMenuClose">关闭</el-button>
+            <el-button type="primary" @click="submitUpdateMenuForm">提交</el-button>
+            <el-button type="warning" @click="resetMenuForm(formUpdateMenuRef)">重置</el-button>
           </span>
       </el-form-item>
     </el-form>
@@ -113,14 +170,24 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { ElMessage } from 'element-plus'
-import { Search } from '@element-plus/icons-vue'
-import { List, ChangeStatus, DeleteMenu, UpdateMenu } from '@/api/auth/menu'
+import { ElMessage, FormInstance } from 'element-plus'
+import { Search, Pointer } from '@element-plus/icons-vue'
+import { List, ChangeStatus, DeleteMenu, UpdateMenu, AddMenu, GetMenuDict } from '@/api/auth/menu'
 
 const background = ref(false)
 const menuList = ref([])
 const loading = ref<boolean>(false)
 const dialogVisibleUpdateMenu = ref<boolean>(false)
+const dialogVisibleAddMenu = ref<boolean>(false)
+const options = ref([])
+const props1 = {
+  multiple: false,
+  checkStrictly: true,
+}
+const changeValue = ref<number>()
+
+const formAddMenuRef = ref<FormInstance>()
+const formUpdateMenuRef = ref<FormInstance>()
 
 const data = reactive({
   form: {},
@@ -131,9 +198,30 @@ const data = reactive({
   },
 })
 
+const addMenuForm = reactive<AddMenuRequestData>({
+  /** 父级菜单 id */
+  parentId: undefined,
+  /** 菜单名称 */
+  title: undefined,
+  /** 前端名称 */
+  name: undefined,
+  /** 菜单级数 */
+  level: 0,
+  /** 组件路径 */
+  component: undefined,
+  /** 路由地址 */
+  path: undefined,
+  /** 菜单图标名称 */
+  icon: undefined,
+  /** 菜单排序 */
+  sort: 1
+})
+
 const updateMenuForm = reactive<UpdateMenuRequestData>({
   /** 菜单id */
   id: 0,
+  /** 父级菜单 id */
+  parentId: undefined,
   /** 菜单名称 */
   title: undefined,
   /** 前端名称 */
@@ -205,7 +293,7 @@ const changeStatusFetch = (data: ChangeMenuStatusRequestData) => {
 }
 
 /** 编辑按钮 */
-const handleEdit = (val: any) => {
+const handleEdit = async (val: any) => {
   updateMenuForm.id = val.id
   updateMenuForm.title = val.title
   updateMenuForm.name = val.name
@@ -214,12 +302,18 @@ const handleEdit = (val: any) => {
   updateMenuForm.path = val.path
   updateMenuForm.icon = val.icon
   updateMenuForm.sort = val.sort
+  await GetMenuDict().then(res => {
+    let resData = res.data
+    let data = resData.data
+    options.value = data
+  })
   dialogVisibleUpdateMenu.value = true
 }
 
 /** 更新菜单弹窗关闭处理 */
 const handleUpdateMenuClose = () => {
   updateMenuForm.id = 0
+  updateMenuForm.parentId = undefined
   updateMenuForm.title = undefined
   updateMenuForm.name = undefined
   updateMenuForm.level = 0
@@ -227,11 +321,13 @@ const handleUpdateMenuClose = () => {
   updateMenuForm.path = undefined
   updateMenuForm.icon = undefined
   updateMenuForm.sort = 1
+  changeValue.value = undefined
   dialogVisibleUpdateMenu.value = false
 }
 
 /** 菜单更新提交 */
 const submitUpdateMenuForm = async () => {
+  updateMenuForm.parentId = changeValue.value
   await UpdateMenu(updateMenuForm).then(res => {
     let resData = res.data
     if (resData.code === 200) {
@@ -246,7 +342,7 @@ const submitUpdateMenuForm = async () => {
       ElMessage({
         showClose: true,
         message: resData.message,
-        type: 'success'
+        type: 'error'
       })
     }
   })
@@ -270,6 +366,70 @@ const handleDelete = (data: number) => {
 /** 搜索 */
 const handleSearchChange = () => {
   getMenuList()
+}
+
+/** 菜单字典选择处理 */
+const handleChange = (value: any) => {
+  if (value.length > 1) {
+    changeValue.value = value[value.length -1]
+  } else {
+    changeValue.value = value[0]
+  }
+}
+
+/** 新增菜单按钮 */
+const handleAddMenu = async () => {
+  addMenuForm.parentId = undefined
+  await GetMenuDict().then(res => {
+    let resData = res.data
+    let data = resData.data
+    options.value = data
+  })
+  dialogVisibleAddMenu.value = true
+}
+
+/** 关闭新增菜单弹窗 */
+const handleAddMenuClose = () => {
+  updateMenuForm.id = 0
+  updateMenuForm.parentId = undefined
+  updateMenuForm.title = undefined
+  updateMenuForm.name = undefined
+  updateMenuForm.level = 0
+  updateMenuForm.component = undefined
+  updateMenuForm.path = undefined
+  updateMenuForm.icon = undefined
+  updateMenuForm.sort = 1
+  changeValue.value = undefined
+  dialogVisibleAddMenu.value = false
+}
+
+/** 新增菜单提交 */
+const submitAddMenuForm = async () => {
+  addMenuForm.parentId = changeValue.value
+  await AddMenu(addMenuForm).then(res => {
+    let resData = res.data
+    if (resData.code === 200) {
+      ElMessage({
+        showClose: true,
+        message: resData.message,
+        type: 'success'
+      })
+      handleAddMenuClose()
+      getMenuList()
+    } else {
+      ElMessage({
+        showClose: true,
+        message: resData.message,
+        type: 'error'
+      })
+    }
+  })
+}
+
+/** 重置按钮 */
+const resetMenuForm = (formEl: FormInstance | undefined) => {
+  changeValue.value = undefined
+  formEl?.resetFields()
 }
 
 getMenuList()

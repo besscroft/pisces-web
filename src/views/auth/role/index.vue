@@ -45,23 +45,35 @@
                 />
               </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="260px">
+            <el-table-column fixed="right" label="操作" width="168">
               <template #default="scope">
-                <el-button type="primary" size="small" @click="handleMenuBanding(scope.row)">菜单配置</el-button>
-                <el-button type="primary" size="small" @click="handleResourceBanding(scope.row)">资源配置</el-button>
-                <el-button type="primary" circle :icon="Edit" size="small" @click="handleUpdateRole(scope.row)"/>
-                <el-popconfirm
-                  confirm-button-text="是的"
-                  cancel-button-text="点错了，抱歉"
-                  :icon="InfoFilled"
-                  icon-color="red"
-                  title="确定要删除吗?"
-                  @confirm="handleClickDelete(scope.row.id)"
-                >
-                  <template #reference>
-                    <el-button type="danger" circle :icon="Delete" size="small"/>
-                  </template>
-                </el-popconfirm>
+                <el-row :gutter="20">
+                  <el-col :span="11">
+                    <el-button type="primary" size="small" @click="handleMenuBanding(scope.row)">菜单配置</el-button>
+                  </el-col>
+                  <el-col :span="11">
+                    <el-button type="primary" size="small" @click="handleResourceBanding(scope.row)">资源配置</el-button>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="20">
+                  <el-col :span="11">
+                    <el-button type="primary" size="small" @click="handleUpdateRole(scope.row)">编辑角色</el-button>
+                  </el-col>
+                  <el-col :span="11">
+                    <el-popconfirm
+                      confirm-button-text="是的"
+                      cancel-button-text="点错了，抱歉"
+                      :icon="InfoFilled"
+                      icon-color="red"
+                      title="确定要删除吗?"
+                      @confirm="handleClickDelete(scope.row.id)"
+                    >
+                      <template #reference>
+                        <el-button type="danger" size="small">删除角色</el-button>
+                      </template>
+                    </el-popconfirm>
+                  </el-col>
+                </el-row>
               </template>
             </el-table-column>
           </el-table>
@@ -102,8 +114,8 @@
       show-checkbox />
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogMenuVisible = false">关闭</el-button>
         <el-button type="primary" @click="handleMenuSubmit">提交</el-button>
+        <el-button @click="dialogMenuVisible = false">关闭</el-button>
       </span>
     </template>
   </el-dialog>
@@ -125,8 +137,8 @@
       show-checkbox />
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogResourceVisible = false">关闭</el-button>
         <el-button type="primary" @click="handleResourceSubmit">提交</el-button>
+        <el-button @click="dialogResourceVisible = false">关闭</el-button>
       </span>
     </template>
   </el-dialog>
@@ -163,8 +175,8 @@
       </el-form-item>
       <el-form-item>
           <span class="dialog-footer">
-            <el-button type="primary" @click="resetRoleForm(formAddRoleRef)">重置</el-button>
-            <el-button @click="submitAddRoleForm">提交</el-button>
+            <el-button type="primary" @click="submitAddRoleForm">提交</el-button>
+            <el-button type="warning" @click="resetRoleForm(formAddRoleRef)">重置</el-button>
           </span>
       </el-form-item>
     </el-form>
@@ -201,8 +213,8 @@
       </el-form-item>
       <el-form-item>
           <span class="dialog-footer">
-            <el-button type="primary" @click="resetRoleForm(formUpdateRoleRef)">重置</el-button>
-            <el-button @click="submitUpdateRoleForm">提交</el-button>
+            <el-button type="primary" @click="submitUpdateRoleForm">提交</el-button>
+            <el-button type="warning" @click="resetRoleForm(formUpdateRoleRef)">重置</el-button>
           </span>
       </el-form-item>
     </el-form>
@@ -436,7 +448,8 @@ const handleResourceBanding = (val: any) => {
 /** 资源绑定弹窗提交处理 */
 const handleResourceSubmit = () => {
   dialogResourceVisible.value = false
-  let childTree = treeResourceRef.value!.getCheckedKeys(false)
+  let childTree = treeResourceRef.value!.getCheckedKeys(true)
+  console.log(childTree)
   UpdateResource(roleId.value, childTree).then(res =>{
     let resData = res.data
     if (resData.code === 200) {
@@ -467,13 +480,13 @@ const submitAddRoleForm = () => {
 
 /** 新增角色弹窗关闭处理 */
 const handleAddRoleClose = () => {
-  formAddRoleRef.value.resetFields()
+  formAddRoleRef.value?.resetFields()
   dialogAddRoleVisible.value = false
 }
 
 /** 重置表单 */
 const resetRoleForm = (formEl: FormInstance | undefined) => {
-  formEl.resetFields()
+  formEl?.resetFields()
 }
 
 /** 更新角色处理 */
@@ -488,7 +501,7 @@ const handleUpdateRole = (val: any) => {
 
 /** 更新角色弹窗关闭处理 */
 const handleUpdateRoleClose = () => {
-  formUpdateRoleRef.value.resetFields()
+  formUpdateRoleRef.value?.resetFields()
   dialogUpdateRoleVisible.value = false
 }
 

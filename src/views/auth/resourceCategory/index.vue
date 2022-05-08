@@ -17,6 +17,13 @@
             :icon="Search">
             搜索
           </el-button>
+          <el-button
+            style="margin-left: 4px"
+            type="primary"
+            @click="handleAddResourceCategory"
+            :icon="Pointer">
+            新增资源类别
+          </el-button>
         </el-card>
       </el-header>
       <el-main>
@@ -29,6 +36,7 @@
             <el-table-column prop="updateTime" label="更新时间" />
             <el-table-column fixed="right" label="操作" width="150">
               <template #default="scope">
+                <el-button size="small" @click="handleUpdateResourceCategory(scope.row)">编辑</el-button>
                 <el-popconfirm
                   confirm-button-text="是的"
                   cancel-button-text="点错了，抱歉"
@@ -38,7 +46,9 @@
                   @confirm="handleClickDelete(scope.row.id)"
                 >
                   <template #reference>
-                    <el-button type="danger" circle :icon="Delete" size="small"/>
+                    <el-button
+                      size="small"
+                      type="danger">删除</el-button>
                   </template>
                 </el-popconfirm>
               </template>
@@ -63,12 +73,84 @@
       </el-main>
     </el-container>
   </div>
+
+  <!-- 新增资源类别弹窗 -->
+  <el-dialog
+    v-model="dialogAddResourceCategoryVisible"
+    title="新增资源类别"
+    width="30%"
+    :before-close="handleAddResourceCategoryClose"
+  >
+    <el-form
+      :model="addResourceCategoryRuleForm"
+      ref="formAddResourceCategoryRef"
+      label-width="120px"
+      class="demo-ruleForm"
+    >
+      <el-form-item label="资源类别名称" prop="name">
+        <el-input placeholder="请输入资源名称" v-model="addResourceCategoryRuleForm.categoryName" />
+      </el-form-item>
+      <el-form-item label="排序" prop="sort">
+        <el-input placeholder="请输入资源排序" v-model="addResourceCategoryRuleForm.sort" />
+      </el-form-item>
+      <el-form-item label="资源类别描述" prop="description">
+        <el-input
+          v-model="addResourceCategoryRuleForm.description"
+          :rows="2"
+          type="textarea"
+          placeholder="请输入资源类别描述"
+        />
+      </el-form-item>
+      <el-form-item>
+          <span class="dialog-footer">
+            <el-button type="primary" @click="submitAddResourceCategoryForm">提交</el-button>
+            <el-button type="warning" @click="resetResourceCategoryForm(formAddResourceCategoryRef)">重置</el-button>
+          </span>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+
+  <!-- 更新资源类别弹窗 -->
+  <el-dialog
+    v-model="dialogUpdateResourceCategoryVisible"
+    title="新增资源类别"
+    width="30%"
+    :before-close="handleUpdateResourceCategoryClose"
+  >
+    <el-form
+      :model="updateResourceCategoryRuleForm"
+      ref="formUpdateResourceCategoryRef"
+      label-width="120px"
+      class="demo-ruleForm"
+    >
+      <el-form-item label="资源类别名称" prop="name">
+        <el-input v-model="updateResourceCategoryRuleForm.categoryName" />
+      </el-form-item>
+      <el-form-item label="排序" prop="sort">
+        <el-input v-model="updateResourceCategoryRuleForm.sort" />
+      </el-form-item>
+      <el-form-item label="资源类别描述" prop="description">
+        <el-input
+          v-model="updateResourceCategoryRuleForm.description"
+          :rows="2"
+          type="textarea"
+        />
+      </el-form-item>
+      <el-form-item>
+          <span class="dialog-footer">
+            <el-button type="primary" @click="submitUpdateResourceCategoryForm">提交</el-button>
+            <el-button type="warning" @click="resetResourceCategoryForm(formUpdateResourceCategoryRef)">重置</el-button>
+          </span>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { Search, InfoFilled, Delete } from '@element-plus/icons-vue'
-import { List, DeleteResourceCategory } from '@/api/auth/resourceCategory'
+import { Search, InfoFilled, Pointer } from '@element-plus/icons-vue'
+import { List, DeleteResourceCategory, AddResourceCategory, UpdateResourceCategory } from '@/api/auth/resourceCategory'
+import { FormInstance } from 'element-plus/es'
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -78,6 +160,11 @@ const background = ref(false)
 const disabled = ref<boolean>(false)
 const resourceCategoryList = ref([])
 const loading = ref<boolean>(false)
+const dialogAddResourceCategoryVisible = ref(false)
+const dialogUpdateResourceCategoryVisible = ref(false)
+
+const formAddResourceCategoryRef = ref<FormInstance>()
+const formUpdateResourceCategoryRef = ref<FormInstance>()
 
 const data = reactive({
   form: {},
@@ -86,6 +173,26 @@ const data = reactive({
     pageSize: 10,
     queryKey: ''
   },
+})
+
+const addResourceCategoryRuleForm = reactive<AddResourceCategoryRequestData>({
+  /** 资源类别名称 */
+  categoryName: '',
+  /** 资源类别描述 */
+  description: '',
+  /** 排序 */
+  sort: 0
+})
+
+const updateResourceCategoryRuleForm = reactive<UpdateResourceCategoryRequestData>({
+  /** 资源类别 id */
+  resourceCategoryId: undefined,
+  /** 资源类别名称 */
+  categoryName: '',
+  /** 资源类别描述 */
+  description: '',
+  /** 排序 */
+  sort: 0
 })
 
 /** 获取资源类别列表 */
@@ -138,5 +245,68 @@ const handleClickDelete = (val: number) => {
   })
 }
 
+/** 重置表单 */
+const resetResourceCategoryForm = (formEl: FormInstance | undefined) => {
+  formEl?.resetFields()
+}
+
+/** 新增资源类别按钮 */
+const handleAddResourceCategory = () => {
+  dialogAddResourceCategoryVisible.value = true
+}
+
+/** 新增资源类别关闭按钮 */
+const handleAddResourceCategoryClose = () => {
+  formAddResourceCategoryRef.value?.resetFields()
+  dialogAddResourceCategoryVisible.value = false
+}
+
+/** 新增资源类别提交 */
+const submitAddResourceCategoryForm = () => {
+  AddResourceCategory(addResourceCategoryRuleForm).then(res => {
+    let resData = res.data
+    if (resData.code === 200) {
+      ElMessage({
+        showClose: true,
+        type: 'success',
+        message: resData.message
+      })
+      handleAddResourceCategoryClose()
+      getResourceCategoryList()
+    }
+  })
+}
+
+/** 更新资源类别按钮 */
+const handleUpdateResourceCategory = (val: any) => {
+  updateResourceCategoryRuleForm.resourceCategoryId = val.id
+  updateResourceCategoryRuleForm.categoryName = val.categoryName
+  updateResourceCategoryRuleForm.description = val.description
+  updateResourceCategoryRuleForm.sort = val.sort
+  dialogUpdateResourceCategoryVisible.value = true
+}
+
+/** 更新资源类别关闭按钮 */
+const handleUpdateResourceCategoryClose = () => {
+  formUpdateResourceCategoryRef.value?.resetFields()
+  dialogUpdateResourceCategoryVisible.value = false
+}
+
+/** 更新资源类别提交 */
+const submitUpdateResourceCategoryForm = () => {
+  UpdateResourceCategory(updateResourceCategoryRuleForm).then(res => {
+    let resData = res.data
+    if (resData.code === 200) {
+      ElMessage({
+        showClose: true,
+        type: 'success',
+        message: resData.message
+      })
+      handleUpdateResourceCategoryClose()
+      getResourceCategoryList()
+    }
+  })
+
+}
 getResourceCategoryList()
 </script>

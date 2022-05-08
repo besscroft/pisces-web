@@ -214,7 +214,7 @@
       <el-form-item>
           <span class="dialog-footer">
             <el-button type="primary" @click="submitAddUserForm(addUserRuleFormRef)">提交</el-button>
-            <el-button @click="resetForm(addUserRuleFormRef)">重置</el-button>
+            <el-button type="warning" @click="resetForm(addUserRuleFormRef)">重置</el-button>
             <el-button @click="canalForm(addUserRuleFormRef)">关闭</el-button>
           </span>
       </el-form-item>
@@ -274,7 +274,7 @@
       <el-form-item>
           <span class="dialog-footer">
             <el-button type="primary" @click="submitUpdateUserForm">提交</el-button>
-            <el-button @click="handleUpdateUserClose(updateUserRuleFormRef)">关闭</el-button>
+            <el-button type="warning" @click="resetForm(updateUserRuleFormRef)">重置</el-button>
           </span>
       </el-form-item>
     </el-form>
@@ -307,8 +307,8 @@
       </el-form-item>
       <el-form-item>
           <span class="dialog-footer">
-            <el-button @click="submitUpdateRoleForm">提交</el-button>
-            <el-button type="primary" @click="handleUpdateRoleClose(updateUserRuleFormRef)">关闭</el-button>
+            <el-button type="primary" @click="submitUpdateRoleForm">提交</el-button>
+            <el-button @click="handleUpdateRoleClose(updateUserRuleFormRef)">关闭</el-button>
           </span>
       </el-form-item>
     </el-form>
@@ -508,13 +508,13 @@ const handleDetailClose = () => {
 
 /** 新增用户弹窗关闭处理 */
 const handleAddUserClose = () => {
-  addUserRuleFormRef.value.resetFields()
+  addUserRuleFormRef.value?.resetFields()
   dialogVisibleAddUser.value = false
 }
 
 /** 更新用户弹窗关闭处理 */
 const handleUpdateUserClose = () => {
-  updateUserRuleFormRef.value.resetFields()
+  updateUserRuleFormRef.value?.resetFields()
   dialogVisibleUpdateUser.value = false
 }
 
@@ -591,14 +591,14 @@ const submitUpdateUserForm = async () => {
 
 /** 重置表单 */
 const resetForm = (formEl: FormInstance | undefined) => {
-  formEl.resetFields()
-  formEl.clearValidate()
+  formEl?.resetFields()
+  formEl?.clearValidate()
 }
 
 /** 关闭表单 */
 const canalForm = (formEl: FormInstance | undefined) => {
-  formEl.resetFields()
-  formEl.clearValidate()
+  formEl?.resetFields()
+  formEl?.clearValidate()
   dialogVisibleAddUser.value = false
   dialogVisibleUpdateUser.value = false
 }

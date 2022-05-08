@@ -6,7 +6,9 @@ enum Api {
   Delete = '/pisces-admin/menu/delete',
   Update = '/pisces-admin/menu/update',
   GetMenuIdsByRoleId = '/pisces-admin/menu/getId/role',
-  GetAll = '/pisces-admin/menu/getAll'
+  GetAll = '/pisces-admin/menu/getAll',
+  Add = '/pisces-admin/menu/add',
+  GetMenuDict = '/pisces-admin/menu/getMenuDict'
 }
 
 /** 获取用菜单列表 */
@@ -56,6 +58,23 @@ export function FindMenuIdsByRoleId(roleId: number) {
 export function GetAllMenu() {
   return request({
     url: Api.GetAll,
+    method: 'get'
+  })
+}
+
+/** 更新菜单 */
+export function AddMenu(data: AddMenuRequestData) {
+  return request({
+    url: Api.Add,
+    method: 'post',
+    data
+  })
+}
+
+/** 获取菜单字典 */
+export function GetMenuDict() {
+  return request({
+    url: Api.GetMenuDict,
     method: 'get'
   })
 }

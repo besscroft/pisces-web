@@ -15,6 +15,8 @@ interface ChangeMenuStatusRequestData {
 interface UpdateMenuRequestData {
   /** 菜单id */
   id: number
+  /** 父级菜单 id */
+  parentId: number | undefined
   /** 菜单名称 */
   title: string | undefined
   /** 前端名称 */
@@ -29,4 +31,24 @@ interface UpdateMenuRequestData {
   icon: string | undefined
   /** 菜单排序 */
   sort: number
+}
+
+/** 菜单新增请求参数 */
+interface AddMenuRequestData {
+  /** 父级菜单 id */
+  parentId: number | undefined
+  /** 菜单名称 */
+  title: string | undefined
+  /** 前端名称 */
+  name: string | undefined
+  /** 菜单级数 */
+  level: number | undefined
+  /** 组件路径 */
+  component: string | undefined
+  /** 路由地址 */
+  path: string | undefined
+  /** 菜单图标名称 */
+  icon: string | undefined
+  /** 菜单排序 */
+  sort: number | undefined
 }
