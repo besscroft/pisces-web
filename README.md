@@ -12,7 +12,7 @@ Vue3 + Vite + Vuex + Vue Router + TypeScript
 
 ### 预览
 
-[Pisces Cloud](https://pisces.besscroft.com/) ，dev 分支预览（东西做的很慢🥲凑合看看）
+[Pisces Cloud](https://pisces.besscroft.com/) 东西做的很慢🥲凑合看看
 
 ### 文档
 
