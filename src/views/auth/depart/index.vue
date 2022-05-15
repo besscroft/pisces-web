@@ -28,7 +28,6 @@
       </el-header>
       <el-main>
         <el-card class="box-card">
-          <!-- todo 树形表格 -->
           <el-table
             v-loading="loading"
             row-key="id"

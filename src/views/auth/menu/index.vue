@@ -136,7 +136,7 @@
       class="demo-ruleForm"
     >
       <el-form-item label="父菜单选择" prop="title">
-        <el-cascader :options="options" :props="props1" @change="handleChange" clearable />
+        <el-cascader :options="options" :props="props1" v-model="changeValue" @change="handleChange" clearable />
       </el-form-item>
       <el-form-item label="菜单名称" prop="title">
         <el-input v-model="updateMenuForm.title" />
@@ -302,6 +302,7 @@ const handleEdit = async (val: any) => {
   updateMenuForm.path = val.path
   updateMenuForm.icon = val.icon
   updateMenuForm.sort = val.sort
+  changeValue.value = val.parentId
   await GetMenuDict().then(res => {
     let resData = res.data
     let data = resData.data
