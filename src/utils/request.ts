@@ -9,8 +9,8 @@ const request = axios.create({
 })
 
 /** 异常拦截处理器 */
-const errorHandler = (error:{message:string}) => {
-  ElMessage.error(error.message || 'Error')
+const errorHandler = (error: any) => {
+  ElMessage.error(error.response.data.message || 'Error')
   return Promise.reject(error)
 }
 
