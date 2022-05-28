@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
 import { getToken } from '@/utils/cookies'
 
@@ -9,8 +9,8 @@ const request = axios.create({
 })
 
 /** 异常拦截处理器 */
-const errorHandler = (error: any) => {
-  ElMessage.error(error.response.data.message || 'Error')
+const errorHandler = (error: AxiosError) => {
+  ElMessage.error(error.response?.data.message || 'Error')
   return Promise.reject(error)
 }
 
