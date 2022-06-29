@@ -1,6 +1,6 @@
 {
   "name": "pisces-cloud-web",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "homepage": "https://github.com/bessroft/pisces-cloud-web",
   "scripts": {
     "dev": "vite",
@@ -37,6 +37,7 @@
     "@vue/cli-plugin-vuex": "^5.0.1",
     "@vue/cli-service": "^5.0.1",
     "babel-loader": "^8.2.3",
+    "http-proxy-middleware": "^2.0.6",
     "path-browserify": "^1.0.1",
     "sass": "^1.49.9",
     "sass-loader": "^12.6.0",
