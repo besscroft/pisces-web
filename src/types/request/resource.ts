@@ -15,6 +15,8 @@ interface AddResourceRequestData {
   description: string | undefined
   /** 资源类别ID */
   categoryId: number | undefined
+  /** 路由分配 key */
+  routeKey: string
   /** 排序 */
   sort: number | undefined
 }
@@ -31,6 +33,8 @@ interface UpdateResourceRequestData {
   description: string | undefined
   /** 资源类别ID */
   categoryId: number | undefined
+  /** 路由分配 key */
+  routeKey: string
   /** 排序 */
   sort: number | undefined
 }

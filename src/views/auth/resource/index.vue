@@ -31,7 +31,8 @@
           <el-table v-loading="loading" border :data="resourceList" height="250" style="width: 100%;height: 650px">
             <el-table-column prop="name" label="资源名称" width="100" />
             <el-table-column prop="url" label="资源路径" width="100" />
-            <el-table-column prop="description" label="部门描述" />
+            <el-table-column prop="description" label="资源描述" />
+            <el-table-column prop="routeKey" label="路由分配 key" />
             <el-table-column prop="sort" label="排序" width="100"/>
             <el-table-column prop="createTime" label="创建时间" />
             <el-table-column prop="updateTime" label="更新时间" />
@@ -104,6 +105,9 @@
       <el-form-item label="资源路径" prop="url">
         <el-input placeholder="请输入资源路径" v-model="addResourceRuleForm.url" />
       </el-form-item>
+      <el-form-item label="路由分配 key" prop="routeKey">
+        <el-input placeholder="路由分配 key" v-model="addResourceRuleForm.routeKey" />
+      </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input placeholder="请输入资源排序" v-model="addResourceRuleForm.sort" />
       </el-form-item>
@@ -127,7 +131,7 @@
   <!-- 更新资源弹窗 -->
   <el-dialog
     v-model="dialogUpdateResourceVisible"
-    title="新增资源"
+    title="更新资源"
     width="30%"
     :before-close="handleUpdateResourceClose"
   >
@@ -152,6 +156,9 @@
       </el-form-item>
       <el-form-item label="资源路径" prop="url">
         <el-input v-model="updateResourceRuleForm.url" />
+      </el-form-item>
+      <el-form-item label="路由分配 key" prop="routeKey">
+        <el-input placeholder="路由分配 key" v-model="updateResourceRuleForm.routeKey" />
       </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input v-model="updateResourceRuleForm.sort" />
@@ -216,6 +223,8 @@ const addResourceRuleForm = reactive<AddResourceRequestData>({
   description: '',
   /** 资源类别ID */
   categoryId: undefined,
+  /** 路由分配 key */
+  routeKey: '',
   /** 排序 */
   sort: 2
 })
@@ -231,6 +240,8 @@ const updateResourceRuleForm = reactive<UpdateResourceRequestData>({
   description: '',
   /** 资源类别ID */
   categoryId: undefined,
+  /** 路由分配 key */
+  routeKey: '',
   /** 排序 */
   sort: 2
 })
@@ -338,6 +349,7 @@ const handleUpdateResource = (val: any) => {
   updateResourceRuleForm.name = val.name
   updateResourceRuleForm.url = val.url
   updateResourceRuleForm.description = val.description
+  updateResourceRuleForm.routeKey = val.routeKey
   updateResourceRuleForm.sort = val.sort
   updateResourceRuleForm.categoryId = val.categoryId
   dialogUpdateResourceVisible.value = true
