@@ -244,7 +244,7 @@ const getMenuList = () => {
   List(data.queryParam).then(res => {
     loading.value = false
     let resData = res.data
-    let dataList = resData.data.list
+    let dataList = resData.data
     for (const dataListKey in dataList) {
       let data = dataList[dataListKey]
       menuHiddenHandle(data)
