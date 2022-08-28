@@ -106,7 +106,14 @@
         <el-input placeholder="请输入资源路径" v-model="addResourceRuleForm.url" />
       </el-form-item>
       <el-form-item label="路由分配 key" prop="routeKey">
-        <el-input placeholder="路由分配 key" v-model="addResourceRuleForm.routeKey" />
+        <el-select v-model="addResourceRuleForm.routeKey" class="m-2" placeholder="请选择路由分配 key" size="large">
+          <el-option
+            v-for="item in dictList"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input placeholder="请输入资源排序" v-model="addResourceRuleForm.sort" />
@@ -158,7 +165,14 @@
         <el-input v-model="updateResourceRuleForm.url" />
       </el-form-item>
       <el-form-item label="路由分配 key" prop="routeKey">
-        <el-input placeholder="路由分配 key" v-model="updateResourceRuleForm.routeKey" />
+        <el-select v-model="updateResourceRuleForm.routeKey" class="m-2" placeholder="请选择路由分配 key" size="large">
+          <el-option
+            v-for="item in dictList"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="排序" prop="sort">
         <el-input v-model="updateResourceRuleForm.sort" />
@@ -185,6 +199,7 @@ import { ElMessage, FormInstance } from 'element-plus'
 import { Search, InfoFilled, Pointer } from '@element-plus/icons-vue'
 import { List, DeleteResource, AddResource, UpdateResource } from '@/api/auth/resource'
 import { GetResourceCategoryDict } from '@/api/auth/resourceCategory'
+import { GetKeyByDictGroup } from '@/api/system/dict'
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -196,6 +211,7 @@ const resourceList = ref([])
 const loading = ref<boolean>(false)
 const dialogAddResourceVisible = ref(false)
 const dialogUpdateResourceVisible = ref(false)
+const dictList = ref([])
 
 const formAddResourceRef = ref<FormInstance>()
 const formUpdateResourceRef = ref<FormInstance>()
@@ -256,6 +272,18 @@ const getResourceList = () => {
     resourceList.value = dataList
     total.value = resData.data.total
   });
+}
+
+/** 获取资源 key 字典 */
+const getKeyByDictGroup = () => {
+  const queryKey = 'RESOURCE'
+  GetKeyByDictGroup(queryKey).then(res => {
+    let resData = res.data
+    let data = resData.data
+    console.log(data)
+    let valueList = data.map((x: any) => x.key);
+    dictList.value = valueList
+  })
 }
 
 /** 获取资源类别字典 */
@@ -379,4 +407,5 @@ const submitUpdateResourceForm = () => {
 
 getResourceList()
 getResourceCategoryDict()
+getKeyByDictGroup()
 </script>
