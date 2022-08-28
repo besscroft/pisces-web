@@ -224,7 +224,7 @@
 import { reactive, ref } from 'vue'
 import { Search, InfoFilled, Delete, Pointer, Edit } from '@element-plus/icons-vue'
 import { ElMessage, ElTree, FormInstance } from 'element-plus'
-import { ChangeStatus, UpdateMenu, UpdateResource, DeleteRoleById, List } from '@/api/auth/role'
+import { ChangeStatus, UpdateMenu, UpdateResource, DeleteRoleById, List, AddRole, UpdateRole } from '@/api/auth/role'
 import { FindMenuIdsByRoleId, GetAllMenu } from '@/api/auth/menu'
 import { TreeKey } from 'element-plus/es/components/tree-v2/src/types'
 import { FindResourceIdsByRoleId, GetAllResource } from '@/api/auth/resource'
@@ -475,7 +475,18 @@ const handleAddRole = () => {
 
 /** 新增角色提交 */
 const submitAddRoleForm = () => {
-  dialogAddRoleVisible.value = false
+  AddRole(addRoleRuleForm).then(res => {
+    let resData = res.data
+    if (resData.code === 200) {
+      ElMessage({
+        showClose: true,
+        type: 'success',
+        message: resData.message
+      })
+    }
+    handleAddRoleClose()
+    getRoleList()
+  })
 }
 
 /** 新增角色弹窗关闭处理 */
@@ -507,7 +518,18 @@ const handleUpdateRoleClose = () => {
 
 /** 更新角色提交 */
 const submitUpdateRoleForm = () => {
-  dialogUpdateRoleVisible.value = false
+  UpdateRole(updateRoleRuleForm).then(res => {
+    let resData = res.data
+    if (resData.code === 200) {
+      ElMessage({
+        showClose: true,
+        type: 'success',
+        message: resData.message
+      })
+    }
+    handleUpdateRoleClose()
+    getRoleList()
+  })
 }
 
 getRoleList()
