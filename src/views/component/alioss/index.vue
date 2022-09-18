@@ -7,11 +7,36 @@
         </el-card>
       </el-header>
       <el-main>
+        <el-card class="box-card">
+          <el-upload
+            class="upload-image"
+            method="post"
+            name="file"
+            :headers="token"
+            drag
+            action="/api/pisces-file/aliyun/oss/upload"
+            multiple
+          >
+            <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+            <div class="el-upload__text">
+              将图片拖动到此处或者 <em>点击上传</em>
+            </div>
+            <template #tip>
+              <div class="el-upload__tip">
+                文件大小最大为 5MB
+              </div>
+            </template>
+          </el-upload>
+        </el-card>
       </el-main>
     </el-container>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { getToken } from '@/utils/cookies'
 
+const token = {
+  Authorization: 'Bearer ' + getToken()
+}
 </script>
