@@ -28,7 +28,7 @@
       </el-header>
       <el-main>
         <el-card class="box-card">
-          <el-table v-loading="loading" border :data="resourceList" height="250" style="width: 100%;height: 650px">
+          <el-table v-loading="loading" border :data="resourceList" style="width: 100%;height: 650px">
             <el-table-column prop="name" label="资源名称" width="100" />
             <el-table-column prop="url" label="资源路径" width="100" />
             <el-table-column prop="description" label="资源描述" />

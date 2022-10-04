@@ -28,7 +28,7 @@
       </el-header>
       <el-main>
         <el-card class="box-card">
-          <el-table v-loading="loading" border :data="userList" height="250" style="width: 100%;height: 650px">
+          <el-table v-loading="loading" border :data="userList" style="width: 100%;height: 650px">
             <el-table-column prop="username" label="用户名"/>
             <el-table-column prop="avatar" label="头像" width="88">
               <template #default="scope">
