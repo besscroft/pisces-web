@@ -102,7 +102,7 @@ const activeMenu = computed(() => {
 
 .has-logo {
   .el-scrollbar {
-    // 84px 是 logo 区域的 height
+    // 50px 是 logo 区域的 height
     height: calc(100% - 50px);
   }
 }
@@ -119,7 +119,7 @@ const activeMenu = computed(() => {
   height: 60px;
   line-height: 60px;
   &:hover {
-    background-color: #ffffff10;
+    background-color: #495060;
   }
   display: block;
   * {

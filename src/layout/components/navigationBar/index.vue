@@ -5,7 +5,7 @@
     <BreadCrumb class="breadcrumb" />
     <div class="right-menu">
       <Screenfull v-if="showScreenfull" class="right-menu-item" />
-      <ThemeSwitch v-if="showThemeSwitch" class="right-menu-item" />
+<!--      <ThemeSwitch v-if="showThemeSwitch" class="right-menu-item" />-->
       <el-dropdown class="right-menu-item">
         <el-avatar :src="squareUrl" :size="34" />
         <template #dropdown>
@@ -32,7 +32,7 @@ import Hamburger from '../hamburger/index.vue'
 import ThemeSwitch from '@/components/themeSwitch/index.vue'
 import Screenfull from '@/components/screenfull/index.vue'
 import { loginOut } from '@/api/login'
-import {ElMessage} from "element-plus";
+import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const squareUrl = computed(() => {

@@ -19,9 +19,9 @@ const props = defineProps({
 
 <style scoped lang="scss">
 .el-svg-icon {
-  width: 1em;
-  height: 1em;
-  margin-left: -2px; //el-svg-icon has some margin
+  width: 1.25em;
+  height: 1.25em;
+  margin-left: 0.25em; //el-svg-icon has some margin
   font-size: 20px !important;
   text-align: left !important;
 }

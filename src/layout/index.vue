@@ -114,10 +114,10 @@ $sideBarWidth: 220px;
     margin-left: 42px;
   }
   .sidebar-container {
-    width: 42px !important;
+    width: 52px !important;
   }
   .fixed-header {
-    width: calc(100% - 42px);
+    width: calc(100% - 52px);
   }
 }
 
