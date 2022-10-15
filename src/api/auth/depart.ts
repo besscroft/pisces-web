@@ -5,7 +5,8 @@ enum Api {
   Delete = '/pisces-admin/depart/delete',
   AddDepart = '/pisces-admin/depart/add',
   UpdateDepart = '/pisces-admin/depart/update',
-  GetDepartDict = '/pisces-admin/depart/getDepartDict'
+  GetDepartDict = '/pisces-admin/depart/getDepartDict',
+  GetUserDepartList = '/pisces-admin/depart/getUserDepartList'
 }
 
 /** 获取部门列表 */
@@ -47,6 +48,14 @@ export function UpdateDepart(data: UpdateDepartRequestData) {
 export function GetDepartDict() {
   return request({
     url: Api.GetDepartDict,
+    method: 'get'
+  })
+}
+
+/** 部门树 */
+export function GetUserDepartList() {
+  return request({
+    url: Api.GetUserDepartList,
     method: 'get'
   })
 }

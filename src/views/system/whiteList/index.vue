@@ -33,7 +33,7 @@
             row-key="id"
             border
             :data="whiteList"
-            style="width: 100%;height: 650px"
+            style="width: 100%"
             default-expand-all
           >
             <el-table-column prop="title" label="白名单规则名称" width="200" />

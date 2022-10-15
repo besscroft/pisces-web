@@ -27,84 +27,109 @@
         </el-card>
       </el-header>
       <el-main>
-        <el-card class="box-card">
-          <el-table v-loading="loading" border :data="userList" style="width: 100%;height: 650px">
-            <el-table-column prop="username" label="用户名"/>
-            <el-table-column prop="avatar" label="头像" width="88">
-              <template #default="scope">
-                <el-image style="width: 66px; height: 66px" :src="scope.row.avatar" fit="fit" />
+        <el-row :gutter="20">
+          <el-col :span="6">
+            <el-card class="box-card">
+              <template #header>
+                <div class="card-header">
+                  <span>部门</span>
+                </div>
               </template>
-            </el-table-column>
-            <el-table-column prop="email" label="邮箱" />
-            <el-table-column prop="name" label="昵称"/>
-            <el-table-column prop="telephone" label="手机" />
-            <el-table-column prop="birthday" label="生日" />
-            <el-table-column prop="sex" label="性别">
-              <template #default="scope">
-                <p v-if="scope.row.sex === 1">男</p>
-                <p v-else>女</p>
-              </template>
-            </el-table-column>
-            <el-table-column prop="status" label="启用状态">
-              <template #default="scope">
-                <el-switch
-                  v-model="scope.row.status"
-                  inline-prompt
-                  active-text="是"
-                  inactive-text="否"
-                  @change="handleChangeStatus(scope.row)"
-                />
-              </template>
-            </el-table-column>
-            <el-table-column prop="remark" label="备注" />
-            <el-table-column fixed="right" label="操作" width="168">
-              <template #default="scope">
-                <el-row :gutter="20">
-                  <el-col :span="11">
-                    <el-button type="primary" size="small" @click="handleRoleBanding(scope.row)">角色配置</el-button>
-                  </el-col>
-                  <el-col :span="11">
-                    <el-button type="primary" size="small" @click="handleClickDetail(scope.row)">查看详情</el-button>
-                  </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                  <el-col :span="11">
-                    <el-button type="primary" size="small" @click="handleUpdateUser(scope.row)">编辑用户</el-button>
-                  </el-col>
-                  <el-col :span="11">
-                    <el-popconfirm
-                      confirm-button-text="是的"
-                      cancel-button-text="点错了，抱歉"
-                      :icon="InfoFilled"
-                      icon-color="red"
-                      title="确定要删除吗?"
-                      @confirm="handleClickDelete(scope.row.id)"
-                    >
-                      <template #reference>
-                        <el-button type="danger" size="small">删除用户</el-button>
-                      </template>
-                    </el-popconfirm>
-                  </el-col>
-                </el-row>
-              </template>
-            </el-table-column>
-          </el-table>
+              <el-tree
+                :data="departData"
+                :props="departProps"
+                accordion
+                default-expand-all="true"
+                highlight-current="true"
+                @node-click="handleDepartNodeClick"
+              />
+            </el-card>
+          </el-col>
+          <el-col :span="18">
+            <el-card class="box-card">
+              <el-table v-loading="loading" border :data="userList" style="width: 100%">
+                <el-table-column prop="username" label="用户名"/>
+                <el-table-column prop="avatar" label="头像" width="88">
+                  <template #default="scope">
+                    <el-image style="width: 66px; height: 66px" :src="scope.row.avatar" fit="fit" />
+                  </template>
+                </el-table-column>
+                <el-table-column prop="email" label="邮箱" />
+                <el-table-column prop="name" label="昵称"/>
+                <el-table-column prop="telephone" label="手机" />
+                <el-table-column prop="sex" label="性别">
+                  <template #default="scope">
+                    <p v-if="scope.row.sex === 1">男</p>
+                    <p v-else>女</p>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="status" label="启用状态">
+                  <template #default="scope">
+                    <el-switch
+                      v-model="scope.row.status"
+                      inline-prompt
+                      active-text="是"
+                      inactive-text="否"
+                      @change="handleChangeStatus(scope.row)"
+                    />
+                  </template>
+                </el-table-column>
+                <el-table-column prop="remark" label="备注" />
+                <el-table-column fixed="right" label="部门" >
+                  <template #default="scope">
+                    <el-tag @click="handleDepartBanding(scope.row)" class="ml-2" type="success">{{ scope.row.departName }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column fixed="right" label="操作" width="168">
+                  <template #default="scope">
+                    <el-row :gutter="20">
+                      <el-col :span="11">
+                        <el-button type="primary" size="small" @click="handleRoleBanding(scope.row)">角色配置</el-button>
+                      </el-col>
+                      <el-col :span="11">
+                        <el-button type="primary" size="small" @click="handleClickDetail(scope.row)">查看详情</el-button>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
+                      <el-col :span="11">
+                        <el-button type="primary" size="small" @click="handleUpdateUser(scope.row)">编辑用户</el-button>
+                      </el-col>
+                      <el-col :span="11">
+                        <el-popconfirm
+                          confirm-button-text="是的"
+                          cancel-button-text="点错了，抱歉"
+                          :icon="InfoFilled"
+                          icon-color="red"
+                          title="确定要删除吗?"
+                          @confirm="handleClickDelete(scope.row.id)"
+                        >
+                          <template #reference>
+                            <el-button type="danger" size="small">删除用户</el-button>
+                          </template>
+                        </el-popconfirm>
+                      </el-col>
+                    </el-row>
+                  </template>
+                </el-table-column>
+              </el-table>
 
-          <div class="demo-pagination-block">
-            <el-pagination
-              v-model:currentPage="currentPage"
-              v-model:page-size="pageSize"
-              :page-sizes="[10, 50, 100, 200]"
-              :small="small"
-              :disabled="disabled"
-              :background="background"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="total"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-            />
-          </div>
-        </el-card>
+              <div class="demo-pagination-block">
+                <el-pagination
+                  v-model:currentPage="currentPage"
+                  v-model:page-size="pageSize"
+                  :page-sizes="[10, 50, 100, 200]"
+                  :small="small"
+                  :disabled="disabled"
+                  :background="background"
+                  layout="total, sizes, prev, pager, next, jumper"
+                  :total="total"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                />
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
       </el-main>
     </el-container>
   </div>
@@ -313,17 +338,67 @@
       </el-form-item>
     </el-form>
   </el-dialog>
+
+  <!-- 绑定部门弹窗 -->
+  <el-dialog
+    v-model="dialogVisibleUpdateDepart"
+    title="绑定部门"
+    width="36%"
+    :before-close="handleUpdateDepartClose"
+  >
+    <el-button type="primary" plain>当前部门：{{ departName }}</el-button>
+    <el-form
+      :model="updateDepartForm"
+      ref="updateDepartRuleFormRef"
+      label-width="120px"
+      class="demo-ruleForm"
+    >
+      <br />
+      <br />
+      <el-form-item label="选择部门" prop="departId">
+        <el-tree-select
+          v-model="departValue"
+          :data="departData"
+          :props="departProps"
+        >
+          <template #default="{ data: { departName } }">
+            {{ departName }}
+          </template>
+        </el-tree-select>
+      </el-form-item>
+      <el-form-item>
+          <span class="dialog-footer">
+            <el-button type="primary" @click="submitUpdateDepartForm">提交</el-button>
+            <el-button @click="handleUpdateDepartClose(updateDepartRuleFormRef)">关闭</el-button>
+          </span>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { List, ChangeStatus, AddUser, UpdateUser, DeleteUser, UpdateUserRole } from '@/api/auth/user'
+import { List, ChangeStatus, AddUser, UpdateUser, DeleteUser, UpdateUserRole, UpdateUserDepart } from '@/api/auth/user'
 import { GetRoleDict, GetRoleByUserId } from '@/api/auth/role'
-import { Search, Avatar, Delete, InfoFilled, Edit } from '@element-plus/icons-vue'
+import { GetUserDepartList } from '@/api/auth/depart'
+import { Search, Avatar, InfoFilled } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import type { FormInstance } from 'element-plus'
-import store from "@/store";
 
+interface Tree {
+  queryParam: any;
+  departName: string
+  departId: number
+  children?: Tree[]
+}
+
+const departProps = {
+  children: 'children',
+  label: 'departName',
+  value: 'departId'
+}
+
+const departData = ref<Tree[]>([])
 const currentPage = ref(1)
 const pageSize = ref(10)
 const total = ref(0)
@@ -337,8 +412,11 @@ const dialogVisibleDetail = ref<boolean>(false)
 const dialogVisibleAddUser = ref<boolean>(false)
 const dialogVisibleUpdateUser = ref<boolean>(false)
 const dialogVisibleUpdateRole = ref<boolean>(false)
+const dialogVisibleUpdateDepart = ref<boolean>(false)
 const value = ref<Array<number>>()
+const departValue = ref<Array<number>>()
 const roleNames = ref<Array<String>>()
+const departName = ref<Array<String>>()
 const options = ref([{
   label: '',
   value: 0
@@ -347,13 +425,15 @@ const options = ref([{
 const addUserRuleFormRef = ref<FormInstance>()
 const updateUserRuleFormRef = ref<FormInstance>()
 const updateRoleRuleFormRef = ref<FormInstance>()
+const updateDepartRuleFormRef = ref<FormInstance>()
 
 const data = reactive({
   form: {},
   queryParam: {
     pageNum: 1,
     pageSize: 10,
-    queryKey: ''
+    queryKey: '',
+    departId: null
   }
 })
 
@@ -408,6 +488,13 @@ const updateRoleForm = reactive<UpdateUserRoleRequestData>({
   roleIds: []
 })
 
+const updateDepartForm = reactive<UpdateUserDepartRequestData>({
+  /** 用户 id */
+  userId: 0,
+  /** 部门 id */
+  departId: 0
+})
+
 const addUserRules = reactive({
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -418,6 +505,23 @@ const addUserRules = reactive({
     { min: 6, max: 20, message: '长度在 12~20 之间', trigger: 'blur' },
   ],
 })
+
+const handleDepartNodeClick = (tree: Tree) => {
+  data.queryParam.departId = tree.departId
+  getUserList()
+}
+
+/** 获取部门字典 */
+const getDepartDict = () => {
+  loading.value = true
+  GetUserDepartList().then(res => {
+    loading.value = false
+    let resData = res.data
+    let dataList = resData.data
+    departData.value = dataList
+    console.log(dataList)
+  });
+}
 
 /** 获取用户列表 */
 const getUserList = () => {
@@ -466,8 +570,9 @@ const handleCurrentChange = (val: number) => {
 }
 
 /** 搜索 */
-const handleSearchChange = () => {
-  getUserList()
+const handleSearchChange = async () => {
+  await getUserList()
+  await getDepartDict()
 }
 
 /** 详情 */
@@ -653,5 +758,45 @@ const handleUpdateRoleClose = () => {
   dialogVisibleUpdateRole.value = false
 }
 
+/** 部门绑定弹窗 */
+const handleDepartBanding = async (val: any) => {
+  updateDepartForm.userId = val.id
+  departName.value = val.departName
+  departValue.value = val.departName
+  dialogVisibleUpdateDepart.value = true
+}
+
+/** 部门绑定提交 */
+const submitUpdateDepartForm = async () => {
+  updateDepartForm.departId = departValue.value
+  await UpdateUserDepart(updateDepartForm).then(res => {
+    let resData = res.data
+    if (resData.code === 200) {
+      ElMessage({
+        showClose: true,
+        message: resData.message,
+        type: 'success'
+      })
+      getUserList()
+      getDepartDict()
+    } else {
+      ElMessage({
+        showClose: true,
+        message: resData.message,
+        type: 'success'
+      })
+    }
+    handleUpdateDepartClose()
+  })
+}
+
+/** 部门绑定关闭 */
+const handleUpdateDepartClose = () => {
+  updateDepartForm.departId = 0
+  updateDepartForm.userId = 0
+  dialogVisibleUpdateDepart.value = false
+}
+
 getUserList()
+getDepartDict()
 </script>

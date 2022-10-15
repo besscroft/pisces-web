@@ -28,7 +28,7 @@
       </el-header>
       <el-main>
         <el-card class="box-card">
-          <el-table v-loading="loading" border :data="roleList" style="width: 100%;height: 650px">
+          <el-table v-loading="loading" border :data="roleList" style="width: 100%">
             <el-table-column prop="roleName" label="角色名称" />
             <el-table-column prop="roleCode" label="角色编码" />
             <el-table-column prop="description" label="描述" />

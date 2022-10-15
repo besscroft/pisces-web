@@ -28,7 +28,7 @@
       </el-header>
       <el-main>
         <el-card class="box-card">
-          <el-table v-loading="loading" border :data="resourceCategoryList" style="width: 100%;height: 650px">
+          <el-table v-loading="loading" border :data="resourceCategoryList" style="width: 100%">
             <el-table-column prop="categoryName" label="资源类别名称" width="100" />
             <el-table-column prop="description" label="资源描述" />
             <el-table-column prop="sort" label="排序" width="100"/>

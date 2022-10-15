@@ -33,7 +33,7 @@
             row-key="id"
             border
             :data="departList"
-            style="width: 100%;height: 650px"
+            style="width: 100%"
             default-expand-all
           >
             <el-table-column prop="name" label="部门名称" width="200" />

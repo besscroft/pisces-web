@@ -6,7 +6,8 @@ enum Api {
   Add = '/pisces-admin/user/add',
   Delete = '/pisces-admin/user/delete',
   Update = '/pisces-admin/user/update',
-  UpdateUserRole = '/pisces-admin/user/update/role'
+  UpdateUserRole = '/pisces-admin/user/update/role',
+  UpdateUserDepart = '/pisces-admin/user/update/depart'
 }
 
 /** 获取用户列表 */
@@ -57,6 +58,15 @@ export function UpdateUser(data: UpdateUserRequestData) {
 export function UpdateUserRole(data: UpdateUserRoleRequestData) {
   return request({
     url: Api.UpdateUserRole,
+    method: 'put',
+    data
+  })
+}
+
+/** 更新用户的部门 */
+export function UpdateUserDepart(data: UpdateUserDepartRequestData) {
+  return request({
+    url: Api.UpdateUserDepart,
     method: 'put',
     data
   })
