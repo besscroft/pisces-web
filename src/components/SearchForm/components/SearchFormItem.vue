@@ -1,104 +1,63 @@
 <template>
-	<!-- 文本框 -->
-	<template v-if='item.searchType == undefined || item.searchType == 'text''>
-		<el-input
-			v-model='searchParam[item.prop!]'
-			v-bind='item.searchProps'
-			placeholder='请输入'
-			:clearable='clearable(item)'
-		></el-input>
-	</template>
-	<!-- 下拉选择框 -->
-	<template v-if='item.searchType == 'select' || item.searchType == 'multipleSelect''>
-		<el-select
-			v-model='searchParam[item.prop!]'
-			v-bind='item.searchProps'
-			:multiple='item.searchType == 'multipleSelect''
-			placeholder='请选择'
-			:clearable='clearable(item)'
-		>
-			<el-option
-				v-for='itemValue in item.enum'
-				:key='itemValue[item.searchProps?.value] ?? itemValue.value'
-				:label='itemValue[item.searchProps?.label] ?? itemValue.label'
-				:value='itemValue[item.searchProps?.value] ?? itemValue.value'
-				:disabled='itemValue.disabled'
-			/>
-		</el-select>
-	</template>
-	<!-- 下拉树形选择框 -->
-	<template v-if='item.searchType == 'treeSelect' || item.searchType == 'multipleTreeSelect''>
-		<el-tree-select
-			v-model='searchParam[item.prop!]'
-			v-bind='item.searchProps'
-			:multiple='item.searchType == 'multipleTreeSelect''
-			:data='item.enum'
-		/>
-	</template>
-	<!-- 日期选择 -->
-	<template v-if='item.searchType == 'date''>
-		<el-date-picker
-			v-model='searchParam[item.prop!]'
-			v-bind='item.searchProps'
-			value-format='YYYY-MM-DD'
-			type='date'
-			placeholder='请选择日期'
-			:clearable='clearable(item)'
-		/>
-	</template>
-	<!-- 时间范围选择 -->
-	<template v-if='item.searchType == 'timerange''>
-		<el-time-picker
-			v-model='searchParam[item.prop!]'
-			v-bind='item.searchProps'
-			is-range
-			value-format='HH:mm:ss'
-			range-separator='至'
-			start-placeholder='开始时间'
-			end-placeholder='结束时间'
-			:clearable='clearable(item)'
-		/>
-	</template>
-	<!-- 日期范围选择 -->
-	<template v-if='item.searchType == 'daterange''>
-		<el-date-picker
-			v-model='searchParam[item.prop!]'
-			v-bind='item.searchProps'
-			type='daterange'
-			value-format='YYYY-MM-DD'
-			range-separator='至'
-			start-placeholder='开始时间'
-			end-placeholder='结束时间'
-			:clearable='clearable(item)'
-		/>
-	</template>
-	<!-- 日期时间范围选择 -->
-	<template v-if='item.searchType == 'datetimerange''>
-		<el-date-picker
-			v-model='searchParam[item.prop!]'
-			v-bind='item.searchProps'
-			type='datetimerange'
-			value-format='YYYY-MM-DD HH:mm:ss'
-			range-separator='至'
-			start-placeholder='开始时间'
-			end-placeholder='结束时间'
-			:clearable='clearable(item)'
-		/>
-	</template>
+	<div class="card table-search" v-if="columns.length">
+		<el-form ref="formRef" :model="searchParam" :inline="true" label-width="100px">
+			<template v-for="item in getSearchList" :key="item.prop">
+				<el-form-item :label="`${item.label} :`">
+					<SearchFormItem :item="item" :searchParam="searchParam" />
+				</el-form-item>
+			</template>
+		</el-form>
+		<div class="search-operation">
+			<el-button type="primary" :icon="Search" @click="search">搜索</el-button>
+			<el-button :icon="Delete" @click="reset">重置</el-button>
+			<el-button type="primary" link class="search-isOpen" @click="searchShow = !searchShow" v-if="columns.length > maxLength">
+				{{ searchShow ? '合并' : '展开' }}
+				<el-icon class="el-icon--right">
+					<component :is="searchShow ? ArrowUp : ArrowDown"></component>
+				</el-icon>
+			</el-button>
+		</div>
+	</div>
 </template>
 
-<script setup lang='ts' name='searchFormItem'>
-import { ColumnProps } from '@/components/ProTable/interface';
+<script setup lang="ts" name="searchForm">
+import { ref, computed, onMounted } from 'vue'
+import { ColumnProps } from '@/components/ProTable/interface'
+import SearchFormItem from './components/SearchFormItem.vue'
+import { Delete, ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 
-interface SearchFormItem {
-	item: Partial<ColumnProps>; // 具体每一个搜索项的配置
-	searchParam: any; // 搜索参数
+interface ProTableProps {
+	columns: Partial<ColumnProps>[] // 搜索配置列
+	searchParam: any // 搜索参数
+	search: (params: any) => void // 搜索方法
+	reset: (params: any) => void // 重置方法
 }
 
-// 是否有清除按钮 (当搜索项有默认值时，清除按钮不显示)
-const clearable = (item: Partial<ColumnProps>) => {
-	return item.searchInitParam == null || item.searchInitParam == undefined;
-};
+// 默认值
+const props = withDefaults(defineProps<ProTableProps>(), {
+	columns: () => [],
+	searchParam: {}
+})
 
-defineProps<SearchFormItem>();
+const maxLength = ref<number>(4)
+
+onMounted(() => {
+	// * 暂时只判断这两种情况（第四个搜索项为时间/日期范围 || 前三项存在时间/日期范围选择框）
+	if (props.columns.length >= 4) {
+		const searchTypeArr = ['datetimerange', 'daterange']
+		searchTypeArr.includes(props.columns[3].searchType!) ? (maxLength.value = 3) : null
+		props.columns.slice(0, 3).forEach(item => {
+			searchTypeArr.includes(item.searchType!) ? (maxLength.value = 3) : null
+		})
+	}
+})
+
+// 是否展开搜索项
+const searchShow = ref(false)
+
+// 根据是否展开配置搜索项长度
+const getSearchList = computed((): Partial<ColumnProps>[] => {
+	if (searchShow.value) return props.columns
+	return props.columns.slice(0, maxLength.value)
+})
 </script>
