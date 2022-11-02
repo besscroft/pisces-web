@@ -647,6 +647,7 @@ const handleRoleBanding = async (val: any) => {
 			value: i.roleId,
 			label: i.roleName
 		}))
+		// @ts-ignore
 		options.value = roleDict
 	})
 	await GetRoleByUserId(val.id).then((res: any) => {
@@ -660,6 +661,7 @@ const handleRoleBanding = async (val: any) => {
 /** 角色绑定提交 */
 const submitUpdateRoleForm = async () => {
 	let roleIds: Array<number> = []
+	// @ts-ignore
 	roleIds.push(value.value)
 	updateRoleForm.roleIds = roleIds
 	await UpdateUserRole(updateRoleForm).then((res: any) => {
@@ -696,6 +698,7 @@ const handleDepartBanding = async (val: any) => {
 
 /** 部门绑定提交 */
 const submitUpdateDepartForm = async () => {
+	// @ts-ignore
 	updateDepartForm.departId = departValue.value
 	await UpdateUserDepart(updateDepartForm).then((res: any) => {
 		if (res.code === 200) {

@@ -207,6 +207,7 @@ const getDepartDict = () => {
 			value: i.departId,
 			label: i.departName
 		}))
+		// @ts-ignore
 		departDicts.value = departDict
 	})
 }

@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+// @ts-ignore
 import dotenv from 'dotenv'
 
 export function isDevFn(mode: string): boolean {
