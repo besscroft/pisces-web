@@ -1,6 +1,6 @@
-## Pisces Cloud Web
+## Pisces Web
 
-Vue3 + Vite + Vuex + Vue Router + TypeScript
+Vue3 + Vite + Pinia + Vue Router + TypeScript + Element-PLUS
 
 [pisces-cloud 看板](https://github.com/users/besscroft/projects/1)
 
@@ -20,14 +20,18 @@ Vue3 + Vite + Vuex + Vue Router + TypeScript
 
 ## 环境搭建
 
-推荐 yarn
+推荐 pnpm
 ```
 # 克隆项目
-git clone https://github.com/besscroft/pisces-cloud-web.git
+git clone https://github.com/besscroft/pisces-web.git
 
 # 安装依赖
-yarn install
+pnpm i
 
 # 本地开发 启动项目
-yarn dev
+pnpm dev
 ```
+
+## 鸣谢
+
+基于 [Geeker-Admin](https://github.com/HalseySpicy/Geeker-Admin) 项目开发构建而来。
