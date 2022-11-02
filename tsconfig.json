@@ -1,25 +1,36 @@
 {
-  "compilerOptions": {
-    "sourceMap": true,
-    "strict": true,
-    "module": "esnext",
-    "target": "es6",
-    "moduleResolution": "Node",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "lib": ["esnext", "dom"],
-    "types": ["vite/client", "node"],
-    "esModuleInterop": true,
-    "plugins": [
-      { "name": "@vuedx/typescript-plugin-vue" }
-    ]
-  },
-  "include": [
-    "**/*.ts", "**/*.d.ts", "**/*.vue"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+	"compilerOptions": {
+		"target": "esnext",
+		"useDefineForClassFields": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+
+		/* Strict Type-Checking Options */
+		"strict": true /* Enable all strict type-checking options. */,
+		// 'noImplicitAny': true,                 /* Raise error on expressions and declarations with an implied 'any' type. */
+		// 'strictNullChecks': true,              /* Enable strict null checks. */
+		// 'strictFunctionTypes': true,           /* Enable strict checking of function types. */
+		// 'strictBindCallApply': true,           /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
+		// 'strictPropertyInitialization': true,  /* Enable strict checking of property initialization in classes. */
+		// 'noImplicitThis': true,                /* Raise error on 'this' expressions with an implied 'any' type. */
+		// 'alwaysStrict': true,                  /* Parse in strict mode and emit 'use strict' for each source file. */
+
+		"jsx": "preserve",
+		"sourceMap": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		// 跳过第三方库检查，解决打包失败
+		"skipLibCheck": true,
+		"lib": ["esnext", "dom"],
+		// 解析非相对模块名的基准目录
+		"baseUrl": "./",
+		// 模块名到基于 baseUrl 的路径映射的列表。
+		"paths": {
+			"@": ["src"],
+			"@/*": ["src/*"]
+		}
+	},
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "vite.config.ts"],
+	"exclude": ["node_modules", "dist", "**/*.js"]
 }

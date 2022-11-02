@@ -1,22 +1,49 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router'
-import store from './store'
-import '@/styles/index.scss'
-import 'normalize.css'
-import '@/router/permission'
+// reset style sheet
+import '@/styles/reset.scss'
+// CSS common style sheet
+import '@/styles/common.scss'
+// iconfont css
+import '@/assets/iconfont/iconfont.scss'
+// font css
+import '@/assets/fonts/font.scss'
+// element plus
 import ElementPlus from 'element-plus'
+// element icons
+import * as Icons from '@element-plus/icons-vue'
+// element css
 import 'element-plus/dist/index.css'
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
+// element dark(内置暗黑模式)
+import 'element-plus/theme-chalk/dark/css-vars.css'
+// custom element dark(自定义暗黑模式)
+import '@/styles/theme/element-dark.scss'
+// custom element css
+import '@/styles/element.scss'
+// custom directives
+import directives from '@/directives/index'
+// vue Router
+import router from '@/routers/index'
+// vue i18n
+import I18n from '@/languages/index'
+// pinia store
+import pinia from '@/stores/index'
+// svg icons
+import 'virtual:svg-icons-register'
+// errorHandler
+import errorHandler from '@/utils/errorHandler'
 
 const app = createApp(App)
 
-// 使用element-plus,设置本地化
-app.use(ElementPlus, {
-  locale: zhCn
+app.config.errorHandler = errorHandler
+
+// 注册element Icons组件
+Object.keys(Icons).forEach(key => {
+	app.component(key, Icons[key as keyof typeof Icons])
 })
 
-app.use(ElementPlus)
-app.use(store)
 app.use(router)
-app.mount('#app')
+app.use(I18n)
+app.use(pinia)
+app.use(directives)
+app.use(ElementPlus).mount('#app')
