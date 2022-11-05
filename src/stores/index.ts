@@ -16,9 +16,11 @@ export const GlobalStore = defineStore({
 		tokenHead: '',
 		// refreshToken
 		refreshToken: '',
-		// username
+		// 用户名
 		username: '',
-		// avatar
+		// 昵称
+		realName: '',
+		// 头像
 		avatar: '',
 		// element组件大小
 		assemblySize: 'default',
@@ -67,8 +69,12 @@ export const GlobalStore = defineStore({
 			this.refreshToken = refreshToken
 		},
 		// setUsername
-		setUsername(username: any) {
+		setUsername(username: string) {
 			this.username = username
+		},
+		// realName
+		setRealName(realName: string) {
+			this.realName = realName
 		},
 		// setAvatar
 		setAvatar(avatar: any) {

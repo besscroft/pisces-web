@@ -10,7 +10,8 @@ enum Api {
 	Delete = '/user/delete',
 	Update = '/user/update',
 	UpdateUserRole = '/user/update/role',
-	UpdateUserDepart = '/user/update/depart'
+	UpdateUserDepart = '/user/update/depart',
+	GetUserInfoByUserName = '/user/info'
 }
 
 /** 获取用户列表 */
@@ -46,4 +47,9 @@ export const UpdateUserRole = (data: User.UpdateUserRoleRequestData) => {
 /** 更新用户的部门 */
 export const UpdateUserDepart = (data: User.UpdateUserDepartRequestData) => {
 	return http.put<ResultData>(PORT_ADMIN + Api.UpdateUserDepart, data)
+}
+
+/** 根据用户名获取用户信息 */
+export const GetUserInfoByUserName = (username: string) => {
+	return http.get<ResultData>(PORT_ADMIN + Api.GetUserInfoByUserName + '/'+ username)
 }
