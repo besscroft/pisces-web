@@ -8,7 +8,7 @@
 			<Message id="message" />
 			<Fullscreen id="fullscreen" />
 		</div>
-		<span class="username">{{ username }}</span>
+		<span class="username">{{ realName }}</span>
 		<Avatar />
 	</div>
 </template>
@@ -25,7 +25,7 @@ import { GlobalStore } from '@/stores'
 
 const globalStore = GlobalStore()
 
-const username = globalStore.username
+const realName = globalStore.realName
 </script>
 
 <style scoped lang="scss">

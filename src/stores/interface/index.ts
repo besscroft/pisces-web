@@ -20,6 +20,7 @@ export interface GlobalState {
 	tokenHead: string
 	refreshToken: string
 	username: string
+	realName: string
 	avatar: string
 	assemblySize: string
 	language: string

@@ -123,7 +123,7 @@
 
 	<!-- 用户信息弹出框 -->
 	<el-dialog v-model="dialogVisibleDetail" title="用户信息" width="50%" :before-close="handleDetailClose">
-		<el-descriptions title="用户详细信息展示" :column="4" border="true" direction="vertical">
+		<el-descriptions title="用户详细信息展示" :column="4" :border="true" direction="vertical">
 			<el-descriptions-item label="用户id">{{ userDetail.id }}</el-descriptions-item>
 			<el-descriptions-item label="用户名">{{ userDetail.username }}</el-descriptions-item>
 			<el-descriptions-item label="邮箱">{{ userDetail.email }}</el-descriptions-item>

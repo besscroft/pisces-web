@@ -31,6 +31,7 @@ export const AuthStore = defineStore({
 			const globalStore = GlobalStore()
 			globalStore.setAvatar(data.avatar)
 			globalStore.setUsername(data.username)
+			globalStore.setRealName(data.realName)
 			this.authMenuList = data.menus
 		}
 	}

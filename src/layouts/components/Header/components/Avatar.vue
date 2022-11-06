@@ -66,7 +66,7 @@ const infoRef = ref<null | DialogExpose>(null)
 const passwordRef = ref<null | DialogExpose>(null)
 // 打开修改密码和个人信息弹窗
 const openDialog = (refName: string) => {
-	if (refName == 'infoRef') return infoRef.value?.openDialog()
+	if (refName === 'infoRef') return infoRef.value?.openDialog()
 	passwordRef.value?.openDialog()
 }
 </script>
