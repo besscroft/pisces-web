@@ -162,9 +162,9 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { ElMessage, FormInstance } from 'element-plus'
-import { Search, InfoFilled, Pointer } from '@element-plus/icons-vue'
-import { List, DeleteResource, AddResource, UpdateResource } from '@/api/modules/auth/resource'
+import { ElNotification, FormInstance } from 'element-plus'
+import { InfoFilled, Pointer, Search } from '@element-plus/icons-vue'
+import { AddResource, DeleteResource, List, UpdateResource } from '@/api/modules/auth/resource'
 import { GetResourceCategoryDict } from '@/api/modules/auth/resourceCategory'
 import { GetKeyByDictGroup } from '@/api/modules/system/dict'
 import { Resource } from '@/api/interface/auth/resource'
@@ -235,8 +235,7 @@ const getResourceList = () => {
 	loading.value = true
 	List(data.queryParam).then((res: any) => {
 		loading.value = false
-		let dataList = res.data.list
-		resourceList.value = dataList
+		resourceList.value = res.data.list
 		total.value = res.data.total
 	});
 }
@@ -246,8 +245,7 @@ const getKeyByDictGroup = () => {
 	const queryKey = 'RESOURCE'
 	GetKeyByDictGroup(queryKey).then((res: any) => {
 		let data = res.data
-		let valueList = data.map((x: any) => x.key);
-		dictList.value = valueList
+		dictList.value = data.map((x: any) => x.key)
 	})
 }
 
@@ -285,16 +283,16 @@ const handleSearchChange = () => {
 const handleClickDelete = (val: number) => {
 	DeleteResource(val).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		} else {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '失败！',
+				message: res.message,
 				type: 'error',
-				message: res.message
 			})
 		}
 		getResourceList()
@@ -315,10 +313,10 @@ const handleAddResource = () => {
 const submitAddResourceForm = () => {
 	AddResource(addResourceRuleForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		}
 		handleAddResourceClose()
@@ -355,10 +353,10 @@ const handleUpdateResourceClose = () => {
 const submitUpdateResourceForm = () => {
 	UpdateResource(updateResourceRuleForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		}
 		handleUpdateResourceClose()

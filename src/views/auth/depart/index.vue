@@ -134,9 +134,9 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { ElMessage, FormInstance } from 'element-plus'
-import { Search, InfoFilled, Pointer } from '@element-plus/icons-vue'
-import { List, DeleteDepart, AddDepart, UpdateDepart, GetDepartDict } from '@/api/modules/auth/depart'
+import { ElNotification, FormInstance } from 'element-plus'
+import { InfoFilled, Pointer, Search } from '@element-plus/icons-vue'
+import { AddDepart, DeleteDepart, GetDepartDict, List, UpdateDepart } from '@/api/modules/auth/depart'
 import { Depart } from '@/api/interface/auth/depart'
 
 const currentPage = ref(1)
@@ -192,8 +192,7 @@ const getDepartList = () => {
 	loading.value = true
 	List(data.queryParam).then((res: any) => {
 		loading.value = false
-		let dataList = res.data.list
-		departList.value = dataList
+		departList.value = res.data.list
 		total.value = res.data.total
 	});
 }
@@ -233,16 +232,16 @@ const handleSearchChange = () => {
 const handleClickDelete = (val: number) => {
 	DeleteDepart(val).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		} else {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '失败！',
+				message: res.message,
 				type: 'error',
-				message: res.message
 			})
 		}
 		getDepartList()
@@ -264,10 +263,10 @@ const handleAddDepart = () => {
 const submitAddDepartForm = () => {
 	AddDepart(addDepartRuleForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		}
 		handleAddDepartClose()
@@ -302,10 +301,10 @@ const handleUpdateDepartClose = () => {
 const submitUpdateDepartForm = () => {
 	UpdateDepart(updateDepartRuleForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		}
 		handleUpdateDepartClose()

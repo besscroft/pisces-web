@@ -78,6 +78,7 @@ watch(
 		if (TABS_WHITE_LIST.includes(route.path) || !menuList.value.length || subMenu.value.length === 0) return
 		splitActive.value = route.path
 		const menuItem = menuList.value.filter((item: Menu.MenuOptions) => route.path.includes(item.path))
+		if (menuItem.length === 0) return
 		if (menuItem[0].children?.length) return (subMenu.value = menuItem[0].children)
 		subMenu.value = []
 	},

@@ -4,7 +4,7 @@ import { AxiosCanceler } from './helper/axiosCancel'
 import { ResultData } from '@/api/interface'
 import { ResultEnum } from '@/enums/httpEnum'
 import { checkStatus } from './helper/checkStatus'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElNotification } from 'element-plus'
 import { GlobalStore } from '@/stores'
 import { LOGIN_URL } from '@/config/config'
 import router from '@/routers'
@@ -67,19 +67,31 @@ class RequestHttp {
 				tryHideFullScreenLoading()
 				// * 没有权限（code == 401）
 				if (data.code == ResultEnum.UNAUTHORIZED) {
-					ElMessage.error("您没有访问权限！")
+					ElNotification({
+						title: '报错啦！',
+						message: '您没有访问权限！',
+						type: 'error',
+					})
 					return Promise.reject(data)
 				}
 				// * 登陆失效（code == 403）
 				if (data.code == ResultEnum.FORBIDDEN) {
-					ElMessage.error("登录已过期，请您重新登录！")
+					ElNotification({
+						title: '报错啦！',
+						message: '登录已过期，请您重新登录！',
+						type: 'error',
+					})
 					globalStore.setToken('')
 					router.replace(LOGIN_URL)
 					return Promise.reject(data)
 				}
 				// * 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）
 				if (data.code && data.code !== ResultEnum.SUCCESS) {
-					ElMessage.error(data.msg)
+					ElNotification({
+						title: '报错啦！',
+						message: data.message,
+						type: 'error',
+					})
 					return Promise.reject(data)
 				}
 				// * 成功请求（在页面上除非特殊情况，否则不用处理失败逻辑）

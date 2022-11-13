@@ -131,9 +131,9 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { ElMessage, FormInstance } from 'element-plus'
-import { Search, Pointer } from '@element-plus/icons-vue'
-import { List, ChangeStatus, DeleteMenu, UpdateMenu, AddMenu, GetMenuDict } from '@/api/modules/auth/menu'
+import { ElNotification, FormInstance } from 'element-plus'
+import { Pointer, Search } from '@element-plus/icons-vue'
+import { AddMenu, ChangeStatus, DeleteMenu, GetMenuDict, List, UpdateMenu } from '@/api/modules/auth/menu'
 import { Menu } from '@/api/interface/auth/menu'
 
 const menuList = ref([])
@@ -215,11 +215,7 @@ const getMenuList = () => {
 
 /** 菜单递归处理 */
 const menuHiddenHandle = (data: any) => {
-	if (data.isHide === 1) {
-		data.isHide = true
-	} else {
-		data.isHide = false
-	}
+	data.isHide = data.isHide === 1
 	if (data.children != undefined) {
 		let cld = data.children
 		for (const dataListKey in cld) {
@@ -242,10 +238,10 @@ const handleChangeStatus = (val: any) => {
 const changeStatusFetch = (data: Menu.ChangeMenuStatusRequestData) => {
 	ChangeStatus(data).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		}
 	})
@@ -264,8 +260,7 @@ const handleEdit = async (val: any) => {
 	changeValue.value = val.parentId
 	await GetMenuDict().then(res => {
 		let resData = res.data
-		let data = resData.data
-		options.value = data
+		options.value = resData.data
 	})
 	dialogVisibleUpdateMenu.value = true
 }
@@ -290,18 +285,18 @@ const submitUpdateMenuForm = async () => {
 	updateMenuForm.parentId = changeValue.value
 	await UpdateMenu(updateMenuForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
 				message: res.message,
-				type: 'success'
+				type: 'success',
 			})
 			handleUpdateMenuClose()
 			getMenuList()
 		} else {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '失败！',
 				message: res.message,
-				type: 'error'
+				type: 'error',
 			})
 		}
 	})
@@ -311,10 +306,10 @@ const submitUpdateMenuForm = async () => {
 const handleDelete = (data: number) => {
 	DeleteMenu(data).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 			getMenuList()
 		}
@@ -339,8 +334,7 @@ const handleChange = (value: any) => {
 const handleAddMenu = async () => {
 	addMenuForm.parentId = undefined
 	await GetMenuDict().then((res: any) => {
-		let data = res.data
-		options.value = data
+		options.value = res.data
 	})
 	dialogVisibleAddMenu.value = true
 }
@@ -365,18 +359,18 @@ const submitAddMenuForm = async () => {
 	addMenuForm.parentId = changeValue.value
 	await AddMenu(addMenuForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
 				message: res.message,
-				type: 'success'
+				type: 'success',
 			})
 			handleAddMenuClose()
 			getMenuList()
 		} else {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '失败！',
 				message: res.message,
-				type: 'error'
+				type: 'error',
 			})
 		}
 	})

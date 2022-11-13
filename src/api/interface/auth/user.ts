@@ -73,4 +73,12 @@ export namespace User {
 		/** 部门 id */
 		departId: number
 	}
+
+	/** 密码修改请求参数 */
+	export interface UpdatePasswordData {
+		/** 旧密码 */
+		oldPassword: string
+		/** 新密码 */
+		newPassword: string
+	}
 }

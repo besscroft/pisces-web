@@ -119,9 +119,9 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { ElMessage } from 'element-plus'
-import { Search, InfoFilled, Pointer } from '@element-plus/icons-vue'
-import { List, DeleteResourceCategory, AddResourceCategory, UpdateResourceCategory } from '@/api/modules/auth/resourceCategory'
+import { ElNotification } from 'element-plus'
+import { InfoFilled, Pointer, Search } from '@element-plus/icons-vue'
+import { AddResourceCategory, DeleteResourceCategory, List, UpdateResourceCategory } from '@/api/modules/auth/resourceCategory'
 import { FormInstance } from 'element-plus/es'
 import { ResourceCategory } from '@/api/interface/auth/resourceCategory'
 
@@ -173,8 +173,7 @@ const getResourceCategoryList = () => {
 	loading.value = true
 	List(data.queryParam).then((res: any) => {
 		loading.value = false
-		let dataList = res.data.list
-		resourceCategoryList.value = dataList
+		resourceCategoryList.value = res.data.list
 		total.value = res.data.total
 	});
 }
@@ -200,16 +199,16 @@ const handleSearchChange = () => {
 const handleClickDelete = (val: number) => {
 	DeleteResourceCategory(val).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		} else {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'error',
-				message: res.message
 			})
 		}
 		getResourceCategoryList()
@@ -236,10 +235,10 @@ const handleAddResourceCategoryClose = () => {
 const submitAddResourceCategoryForm = () => {
 	AddResourceCategory(addResourceCategoryRuleForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 			handleAddResourceCategoryClose()
 			getResourceCategoryList()
@@ -266,16 +265,16 @@ const handleUpdateResourceCategoryClose = () => {
 const submitUpdateResourceCategoryForm = () => {
 	UpdateResourceCategory(updateResourceCategoryRuleForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 			handleUpdateResourceCategoryClose()
 			getResourceCategoryList()
 		}
 	})
-
 }
+
 getResourceCategoryList()
 </script>
