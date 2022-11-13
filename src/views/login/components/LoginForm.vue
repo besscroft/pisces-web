@@ -59,7 +59,6 @@ const login = (formEl: FormInstance | undefined) => {
 		try {
 			// 登录接口
 			const { data } = await loginApi(loginForm)
-			console.log(data.token)
 			globalStore.setToken(data.token)
 			globalStore.setTokenHead(data.tokenHead)
 			globalStore.setRefreshToken(data.refreshToken)

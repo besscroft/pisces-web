@@ -400,7 +400,6 @@ const handleResourceBanding = (val: any) => {
 const handleResourceSubmit = () => {
 	dialogResourceVisible.value = false
 	let childTree = treeResourceRef.value!.getCheckedKeys(true)
-	console.log(childTree)
 	UpdateResource(roleId.value, childTree).then((res: any) =>{
 		if (res.code === 200) {
 			ElMessage({
