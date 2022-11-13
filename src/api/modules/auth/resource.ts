@@ -14,30 +14,30 @@ enum Api {
 
 /** 获取资源列表 */
 export const List = (data: Resource.ResourceListRequestData) => {
-	return http.post<ResultData>(PORT_ADMIN + Api.List, data)
+	return http.post<ResultData>(PORT_ADMIN + Api.List, data, { headers: { noLoading: true } })
 }
 
 /** 获取资源树 */
 export const GetAllResource = () => {
-	return http.get<ResultData>(PORT_ADMIN + Api.GetAll)
+	return http.get<ResultData>(PORT_ADMIN + Api.GetAll, undefined, { headers: { noLoading: true } })
 }
 
 /** 根据角色id获取资源id列表 */
 export const FindResourceIdsByRoleId = (id: number) => {
-	return http.get<ResultData>(PORT_ADMIN + Api.GetResourceIdsByRoleId + '/' + id)
+	return http.get<ResultData>(PORT_ADMIN + Api.GetResourceIdsByRoleId + '/' + id, undefined, { headers: { noLoading: true } })
 }
 
 /** 删除资源类别 */
 export const DeleteResource = (resourceId: number) => {
-	return http.delete<ResultData>(PORT_ADMIN + Api.Delete + '/' + resourceId)
+	return http.delete<ResultData>(PORT_ADMIN + Api.Delete + '/' + resourceId, undefined, { headers: { noLoading: true } })
 }
 
 /** 新增资源 */
 export const AddResource = (data: Resource.AddResourceRequestData) => {
-	return http.post<ResultData>(PORT_ADMIN + Api.AddResource, data)
+	return http.post<ResultData>(PORT_ADMIN + Api.AddResource, data, { headers: { noLoading: true } })
 }
 
 /** 更新资源 */
 export const UpdateResource = (data: Resource.UpdateResourceRequestData) => {
-	return http.put<ResultData>(PORT_ADMIN + Api.UpdateResource, data)
+	return http.put<ResultData>(PORT_ADMIN + Api.UpdateResource, data, { headers: { noLoading: true } })
 }

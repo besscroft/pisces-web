@@ -32,4 +32,6 @@ const i18nLocale = computed(() => {
 const assemblySize = computed((): string => globalStore.assemblySize)
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+
+</style>

@@ -245,7 +245,6 @@ const handleUpdateDictClose = () => {
 
 /** 新增字典提交 */
 const submitAddDictForm = () => {
-	console.log(addDictRuleForm)
 	AddDict(addDictRuleForm).then((res: any) => {
 		if (res.code === 200) {
 			ElMessage({
@@ -261,7 +260,6 @@ const submitAddDictForm = () => {
 
 /** 更新字典提交 */
 const submitUpdateDictForm = () => {
-	console.log(updateDictRuleForm)
 	UpdateDict(updateDictRuleForm).then((res: any) => {
 		if (res.code === 200) {
 			ElMessage({

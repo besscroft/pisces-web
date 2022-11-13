@@ -13,25 +13,25 @@ enum Api {
 
 /** 获取资源类别列表 */
 export const List = (data: ResourceCategory.ResourceCategoryListRequestData) => {
-	return http.post<ResultData>(PORT_ADMIN + Api.List, data)
+	return http.post<ResultData>(PORT_ADMIN + Api.List, data, { headers: { noLoading: true } })
 }
 
 /** 删除资源类别 */
 export const DeleteResourceCategory = (resourceCategoryId: number) => {
-	return http.delete<ResultData>(PORT_ADMIN + Api.Delete + '/' + resourceCategoryId)
+	return http.delete<ResultData>(PORT_ADMIN + Api.Delete + '/' + resourceCategoryId, undefined, { headers: { noLoading: true } })
 }
 
 /** 资源类别字典 */
 export const GetResourceCategoryDict = () => {
-	return http.get<ResultData>(PORT_ADMIN + Api.GetResourceCategoryDict)
+	return http.get<ResultData>(PORT_ADMIN + Api.GetResourceCategoryDict, undefined, { headers: { noLoading: true } })
 }
 
 /** 新增资源类别 */
 export const AddResourceCategory = (data: ResourceCategory.AddResourceCategoryRequestData) => {
-	return http.post<ResultData>(PORT_ADMIN + Api.Add, data)
+	return http.post<ResultData>(PORT_ADMIN + Api.Add, data, { headers: { noLoading: true } })
 }
 
 /** 更新资源类别 */
 export const UpdateResourceCategory = (data: ResourceCategory.UpdateResourceCategoryRequestData) => {
-	return http.put<ResultData>(PORT_ADMIN + Api.Update, data)
+	return http.put<ResultData>(PORT_ADMIN + Api.Update, data, { headers: { noLoading: true } })
 }

@@ -13,7 +13,6 @@
 						method="post"
 						name="file"
 						:headers="token"
-						before-upload=""
 						drag
 						action="/api/pisces-file/aliyun/oss/uploadCdn"
 						multiple

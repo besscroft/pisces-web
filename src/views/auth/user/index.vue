@@ -26,8 +26,8 @@
 								:data="departData"
 								:props="departProps"
 								accordion
-								default-expand-all="true"
-								highlight-current="true"
+								:default-expand-all="true"
+								:highlight-current="true"
 								@node-click="handleDepartNodeClick"
 							/>
 						</el-card>
@@ -38,7 +38,7 @@
 								<el-table-column prop="username" label="用户名"/>
 								<el-table-column prop="avatar" label="头像" width="88">
 									<template #default="scope">
-										<el-image style="width: 66px; height: 66px" :src="scope.row.avatar" fit="fit" />
+										<el-image style="width: 66px; height: 66px" :src="scope.row.avatar" fit="fill" />
 									</template>
 								</el-table-column>
 								<el-table-column prop="email" label="邮箱" />

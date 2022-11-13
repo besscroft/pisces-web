@@ -1,4 +1,4 @@
-import { isArray } from '@/utils/is'
+import {isArray} from '@/utils/is'
 
 /**
  * @description 获取localStorage
@@ -17,7 +17,7 @@ export function localGet(key: string) {
 /**
  * @description 存储localStorage
  * @param {String} key Storage名称
- * @param {Any} value Storage值
+ * @param {any} value Storage值
  * @return void
  */
 export function localSet(key: string, value: any) {
@@ -43,7 +43,7 @@ export function localClear() {
 
 /**
  * @description 判断数据类型
- * @param {Any} val 需要判断类型的数据
+ * @param {any} val 需要判断类型的数据
  * @return string
  */
 export function isType(val: any) {
@@ -84,8 +84,7 @@ export function isObjectValueEqual(a: { [key: string]: any }, b: { [key: string]
  * @return number
  */
 export function randomNum(min: number, max: number): number {
-	let num = Math.floor(Math.random() * (min - max) + max)
-	return num
+	return Math.floor(Math.random() * (min - max) + max)
 }
 
 /**
@@ -140,8 +139,8 @@ export function filterCurrentRoute(menuList: Menu.MenuOptions[], path: string) {
 
 /**
  * @description 扁平化数组对象(主要用来处理路由菜单)
- * @param {Array} menuList 所有菜单列表
- * @return array
+ * @return array 所有菜单列表
+ * @param menulist 菜单树
  */
 export function getFlatArr(menulist: Menu.MenuOptions[]) {
 	return menulist.reduce((pre: Menu.MenuOptions[], current: Menu.MenuOptions) => {
@@ -154,7 +153,7 @@ export function getFlatArr(menulist: Menu.MenuOptions[]) {
 /**
  * @description 使用递归，过滤需要缓存的路由
  * @param {Array} menuList 所有菜单列表
- * @param {Array} cacheArr 缓存的路由菜单 name ['**','**']
+ * @param {Array} keepAliveArr 缓存的路由菜单 name ['**','**']
  * @return array
  * */
 export function getKeepAliveRouterName(menuList: Menu.MenuOptions[], keepAliveArr: string[] = []) {
@@ -256,7 +255,7 @@ export function formatValue(callValue: any) {
  * @description 根据枚举列表查询当需要的数据（如果指定了 label 和 value 的 key值，会自动识别格式化）
  * @param {String} callValue 当前单元格值
  * @param {Array} enumData 枚举列表
- * @param {String} type 过滤类型（目前只有 tag）
+ * @param {String} searchProps 过滤类型（目前只有 tag）
  * @return string
  * */
 export function filterEnum(callValue: any, enumData: any, searchProps?: { [key: string]: any }, type?: string): string {
