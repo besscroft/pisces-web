@@ -113,8 +113,8 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { AddDict, DeleteDict, List, UpdateDict } from '@/api/modules/system/dict'
-import { ElMessage, FormInstance } from 'element-plus'
-import { Search, Pointer } from '@element-plus/icons-vue'
+import { ElNotification, FormInstance } from 'element-plus'
+import { Pointer, Search } from '@element-plus/icons-vue'
 import { Dict } from '@/api/interface/system/dict'
 
 const currentPage = ref(1)
@@ -168,8 +168,7 @@ const getDictList = () => {
 	loading.value = true
 	List(data.queryParam).then((res: any) => {
 		loading.value = false
-		let dataList = res.data.list
-		dictList.value = dataList
+		dictList.value = res.data.list
 		total.value = res.data.total
 	})
 }
@@ -200,16 +199,16 @@ const handleEdit = (val: any) => {
 const handleDelete = (val: number) => {
 	DeleteDict(val).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		} else {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '失败！',
+				message: res.message,
 				type: 'error',
-				message: res.message
 			})
 		}
 		getDictList()
@@ -247,10 +246,10 @@ const handleUpdateDictClose = () => {
 const submitAddDictForm = () => {
 	AddDict(addDictRuleForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		}
 		handleAddDictClose()
@@ -262,10 +261,10 @@ const submitAddDictForm = () => {
 const submitUpdateDictForm = () => {
 	UpdateDict(updateDictRuleForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		}
 		handleUpdateDictClose()

@@ -314,12 +314,12 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { List, ChangeStatus, AddUser, UpdateUser, DeleteUser, UpdateUserRole, UpdateUserDepart } from '@/api/modules/auth/user'
-import { GetRoleDict, GetRoleByUserId } from '@/api/modules/auth/role'
+import { AddUser, ChangeStatus, DeleteUser, List, UpdateUser, UpdateUserDepart, UpdateUserRole } from '@/api/modules/auth/user'
+import { GetRoleByUserId, GetRoleDict } from '@/api/modules/auth/role'
 import { GetUserDepartList } from '@/api/modules/auth/depart'
-import { Search, Avatar, InfoFilled } from '@element-plus/icons-vue'
-import { ElMessage } from 'element-plus'
+import { Avatar, InfoFilled, Search } from '@element-plus/icons-vue'
 import type { FormInstance } from 'element-plus'
+import { ElNotification } from 'element-plus'
 import { User } from '@/api/interface/auth/user'
 
 interface Tree {
@@ -453,8 +453,7 @@ const getDepartDict = () => {
 	loading.value = true
 	GetUserDepartList().then((res: any) => {
 		loading.value = false
-		let dataList = res.data
-		departData.value = dataList
+		departData.value = res.data
 	});
 }
 
@@ -466,11 +465,7 @@ const getUserList = () => {
 		let dataList = res.data.list
 		for (const dataListKey in dataList) {
 			let data = dataList[dataListKey]
-			if (data.status === 1) {
-				data.status = true
-			} else {
-				data.status = false
-			}
+			data.status = data.status === 1
 		}
 		userList.value = dataList
 		total.value = res.data.total
@@ -481,10 +476,10 @@ const getUserList = () => {
 const changeStatusFetch = (data: User.ChangeUserStatusRequestData) => {
 	ChangeStatus(data).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		}
 	})
@@ -518,10 +513,10 @@ const handleClickDetail = (data: any) => {
 const handleClickDelete = (data: number) => {
 	DeleteUser(data).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 			getUserList()
 		}
@@ -581,19 +576,19 @@ const submitAddUserForm = async (formEl: FormInstance | undefined) => {
 		if (valid) {
 			AddUser(addUserRuleForm).then((res: any) => {
 				if (res.code === 200) {
-					ElMessage({
-						showClose: true,
+					ElNotification({
+						title: '成功！',
 						message: res.message,
-						type: 'success'
+						type: 'success',
 					})
 					formEl.resetFields()
 					dialogVisibleAddUser.value = false
 					getUserList()
 				} else {
-					ElMessage({
-						showClose: true,
+					ElNotification({
+						title: '失败！',
 						message: res.message,
-						type: 'success'
+						type: 'error',
 					})
 				}
 			})
@@ -607,17 +602,17 @@ const submitAddUserForm = async (formEl: FormInstance | undefined) => {
 const submitUpdateUserForm = async () => {
 	await UpdateUser(updateUserForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
 				message: res.message,
-				type: 'success'
+				type: 'success',
 			})
 			getUserList()
 		} else {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '失败！',
 				message: res.message,
-				type: 'success'
+				type: 'error',
 			})
 		}
 		handleUpdateUserClose()
@@ -666,17 +661,17 @@ const submitUpdateRoleForm = async () => {
 	updateRoleForm.roleIds = roleIds
 	await UpdateUserRole(updateRoleForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
 				message: res.message,
-				type: 'success'
+				type: 'success',
 			})
 			getUserList()
 		} else {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '失败！',
 				message: res.message,
-				type: 'success'
+				type: 'error',
 			})
 		}
 		handleUpdateRoleClose()
@@ -702,18 +697,18 @@ const submitUpdateDepartForm = async () => {
 	updateDepartForm.departId = departValue.value
 	await UpdateUserDepart(updateDepartForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
 				message: res.message,
-				type: 'success'
+				type: 'success',
 			})
 			getUserList()
 			getDepartDict()
 		} else {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '失败！',
 				message: res.message,
-				type: 'success'
+				type: 'error',
 			})
 		}
 		handleUpdateDepartClose()

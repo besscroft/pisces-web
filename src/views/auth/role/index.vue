@@ -181,7 +181,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { Search, InfoFilled, Pointer } from '@element-plus/icons-vue'
-import { ElMessage, ElTree, FormInstance } from 'element-plus'
+import { ElNotification, ElTree, FormInstance } from 'element-plus'
 import { ChangeStatus, UpdateMenu, UpdateResource, DeleteRoleById, List, AddRole, UpdateRole } from '@/api/modules/auth/role'
 import { FindMenuIdsByRoleId, GetAllMenu } from '@/api/modules/auth/menu'
 import { TreeKey } from 'element-plus/es/components/tree-v2/src/types'
@@ -263,11 +263,7 @@ const getRoleList = () => {
 		let dataList = res.data.list
 		for (const dataListKey in dataList) {
 			let data = dataList[dataListKey]
-			if (data.status === 1) {
-				data.status = true
-			} else {
-				data.status = false
-			}
+			data.status = data.status === 1
 		}
 		roleList.value = dataList
 		total.value = res.data.total
@@ -304,16 +300,16 @@ const handleChangeStatus = (val: any) => {
 const changeStatusFetch = (data: Role.ChangeRoleStatusRequestData) => {
 	ChangeStatus(data).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		} else {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '失败！',
+				message: res.message,
 				type: 'error',
-				message: res.message
 			})
 		}
 	})
@@ -323,16 +319,16 @@ const changeStatusFetch = (data: Role.ChangeRoleStatusRequestData) => {
 const handleClickDelete = (val: number) => {
 	DeleteRoleById(val).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		} else {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '失败！',
+				message: res.message,
 				type: 'error',
-				message: res.message
 			})
 		}
 		getRoleList()
@@ -364,10 +360,10 @@ const handleMenuSubmit = () => {
 	const menuTreeData: Array<TreeKey> = [...parentTree, ...childTree];
 	UpdateMenu(roleId.value, menuTreeData).then((res: any) =>{
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		}
 	})
@@ -402,10 +398,10 @@ const handleResourceSubmit = () => {
 	let childTree = treeResourceRef.value!.getCheckedKeys(true)
 	UpdateResource(roleId.value, childTree).then((res: any) =>{
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		}
 	})
@@ -426,10 +422,10 @@ const handleAddRole = () => {
 const submitAddRoleForm = () => {
 	AddRole(addRoleRuleForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		}
 		handleAddRoleClose()
@@ -468,10 +464,10 @@ const handleUpdateRoleClose = () => {
 const submitUpdateRoleForm = () => {
 	UpdateRole(updateRoleRuleForm).then((res: any) => {
 		if (res.code === 200) {
-			ElMessage({
-				showClose: true,
+			ElNotification({
+				title: '成功！',
+				message: res.message,
 				type: 'success',
-				message: res.message
 			})
 		}
 		handleUpdateRoleClose()
