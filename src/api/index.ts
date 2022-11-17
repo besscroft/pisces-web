@@ -65,17 +65,9 @@ class RequestHttp {
 				// * 在请求结束后，移除本次请求，并关闭请求 loading
 				axiosCanceler.removePending(config)
 				tryHideFullScreenLoading()
-				// * 没有权限（code == 401）
+				// https://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses
+				// * 登陆失效（code == 401）
 				if (data.code == ResultEnum.UNAUTHORIZED) {
-					ElNotification({
-						title: '报错啦！',
-						message: '您没有访问权限！',
-						type: 'error',
-					})
-					return Promise.reject(data)
-				}
-				// * 登陆失效（code == 403）
-				if (data.code == ResultEnum.FORBIDDEN) {
 					ElNotification({
 						title: '报错啦！',
 						message: '登录已过期，请您重新登录！',
@@ -83,6 +75,15 @@ class RequestHttp {
 					})
 					globalStore.setToken('')
 					router.replace(LOGIN_URL)
+					return Promise.reject(data)
+				}
+				// * 没有权限（code == 403）
+				if (data.code == ResultEnum.FORBIDDEN) {
+					ElNotification({
+						title: '报错啦！',
+						message: '您没有访问权限！',
+						type: 'error',
+					})
 					return Promise.reject(data)
 				}
 				// * 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）
