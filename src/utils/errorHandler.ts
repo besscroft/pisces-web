@@ -15,7 +15,7 @@ const errorHandler = (error: any) => {
 		EvalError: '错误的使用了 Eval',
 		URIError: 'URI 错误'
 	}
-	let errorName = errorMap[error.name] || '未知错误'
+	let errorName = errorMap[error.name] || '系统异常！'
 	ElNotification({
 		title: errorName,
 		message: error,

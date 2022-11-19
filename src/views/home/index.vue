@@ -83,7 +83,7 @@ const pieRef = ref<ChartExpose>()
 const curveRef = ref<ChartExpose>()
 const data = reactive({
 	activeName: 1,
-	bookSum: '123.456w'
+	bookSum: '123.4w'
 })
 const dataScreen: ChartProps = {
 	chart1: null,
