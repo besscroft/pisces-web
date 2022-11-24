@@ -27,12 +27,13 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { GlobalStore } from '@/stores'
-import { LOGIN_URL } from '@/config/config'
+import { COOKIE_NAME_REFRESH_TOKEN, COOKIE_NAME_TOKEN, COOKIE_NAME_TOKEN_HEAD, LOGIN_URL } from '@/config/config'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import InfoDialog from './InfoDialog.vue'
 import PasswordDialog from './PasswordDialog.vue'
 import { loginOut } from '@/api/modules/login'
 import { ResultData } from '@/api/interface'
+import Cookies from 'js-cookie'
 
 const router = useRouter()
 const globalStore = GlobalStore()
@@ -50,6 +51,9 @@ const logout = () => {
 			if (res.code === 200) {
 				router.replace(LOGIN_URL)
 				globalStore.setToken('')
+				Cookies.remove(COOKIE_NAME_TOKEN)
+				Cookies.remove(COOKIE_NAME_TOKEN_HEAD)
+				Cookies.remove(COOKIE_NAME_REFRESH_TOKEN)
 				ElMessage({
 					type: 'success',
 					message: res.message

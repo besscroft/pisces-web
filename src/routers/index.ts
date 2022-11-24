@@ -1,12 +1,13 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { GlobalStore } from '@/stores'
 import { AuthStore } from '@/stores/modules/auth'
-import { LOGIN_URL } from '@/config/config'
+import { COOKIE_NAME_TOKEN, LOGIN_URL } from '@/config/config'
 import { ElNotification } from 'element-plus'
 import { AxiosCanceler } from '@/api/helper/axiosCancel'
 import { initDynamicRouter } from '@/routers/modules/dynamicRouter'
 import { staticRouter, errorRouter } from '@/routers/modules/staticRouter'
 import NProgress from '@/config/nprogress'
+import Cookies from 'js-cookie'
 
 const axiosCanceler = new AxiosCanceler()
 
@@ -47,7 +48,8 @@ router.beforeEach(async (to, from, next) => {
 
 	// 判断是否有 Token，没有重定向到 login
 	const globalStore = GlobalStore()
-	if (!globalStore.token) return next({ path: LOGIN_URL, replace: true })
+	const token = Cookies.get(COOKIE_NAME_TOKEN)
+	if (!globalStore.token && !token) return next({ path: LOGIN_URL, replace: true })
 
 	// 如果没有菜单列表，就重新请求菜单列表并添加动态路由
 	const authStore = AuthStore()
