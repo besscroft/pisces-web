@@ -6,8 +6,9 @@ import { ResultEnum } from '@/enums/httpEnum'
 import { checkStatus } from './helper/checkStatus'
 import { ElMessage, ElNotification } from 'element-plus'
 import { GlobalStore } from '@/stores'
-import { LOGIN_URL } from '@/config/config'
+import { COOKIE_NAME_TOKEN, COOKIE_NAME_TOKEN_HEAD, LOGIN_URL } from '@/config/config'
 import router from '@/routers'
+import Cookies from 'js-cookie'
 
 /**
  * pinia 错误使用说明示例
@@ -46,7 +47,7 @@ class RequestHttp {
 				axiosCanceler.addPending(config)
 				// * 如果当前请求不需要显示 loading,在 api 服务中通过指定的第三个参数: { headers: { noLoading: true } }来控制不显示loading，参见loginApi
 				config.headers!.noLoading || showFullScreenLoading()
-				const token: string = globalStore.tokenHead + globalStore.token
+				const token: string = globalStore.tokenHead + globalStore.token || Cookies.get(COOKIE_NAME_TOKEN_HEAD) + Cookies.get(COOKIE_NAME_TOKEN)
 				return { ...config, headers: { ...config.headers, authorization: token } }
 			},
 			(error: AxiosError) => {

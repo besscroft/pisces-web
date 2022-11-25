@@ -14,3 +14,12 @@ export const TABS_WHITE_LIST: string[] = ['/403', '/404', '/500', LOGIN_URL]
 
 // * 高德地图key
 export const MAP_KEY: string = ''
+
+// * Cookie 名称 -> Token
+export const COOKIE_NAME_TOKEN = 'pisces-cookie-token'
+
+// * Cookie 名称 -> TokenHead
+export const COOKIE_NAME_TOKEN_HEAD = 'pisces-cookie-tokenHead'
+
+// * Cookie 名称 -> RefreshToken
+export const COOKIE_NAME_REFRESH_TOKEN = 'pisces-cookie-refreshToken'

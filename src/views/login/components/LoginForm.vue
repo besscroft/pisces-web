@@ -32,10 +32,11 @@ import { loginApi } from '@/api/modules/login'
 import { GlobalStore } from '@/stores'
 import { TabsStore } from '@/stores/modules/tabs'
 import { getTimeState } from '@/utils/util'
-import { HOME_URL } from '@/config/config'
+import { COOKIE_NAME_REFRESH_TOKEN, COOKIE_NAME_TOKEN, COOKIE_NAME_TOKEN_HEAD, HOME_URL } from '@/config/config'
 import { initDynamicRouter } from '@/routers/modules/dynamicRouter'
 import { CircleClose, UserFilled } from '@element-plus/icons-vue'
 import type { ElForm } from 'element-plus'
+import Cookies from 'js-cookie'
 
 const router = useRouter()
 const tabsStore = TabsStore()
@@ -62,6 +63,9 @@ const login = (formEl: FormInstance | undefined) => {
 			globalStore.setToken(data.token)
 			globalStore.setTokenHead(data.tokenHead)
 			globalStore.setRefreshToken(data.refreshToken)
+			Cookies.set(COOKIE_NAME_TOKEN, data.token)
+			Cookies.set(COOKIE_NAME_TOKEN_HEAD, data.tokenHead)
+			Cookies.set(COOKIE_NAME_REFRESH_TOKEN, data.refreshToken)
 
 			// 添加动态路由
 			await initDynamicRouter()
