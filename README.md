@@ -16,7 +16,7 @@ Vue3 + Vite + Pinia + Vue Router + TypeScript + Element-PLUS
 
 ### 文档
 
-[pisces-cloud 的文档](https://developer.besscroft.com/pisces/) ，在这里你可以找到大部分问题的解答。
+[pisces-cloud 的文档](https://docs.besscroft.com/pisces/readme.html) ，在这里你可以找到大部分问题的解答。
 
 ## 环境搭建
 
